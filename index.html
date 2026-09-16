@@ -29,6 +29,10 @@
 .park-link:hover{text-decoration:underline}
 </style>
 
+
+<style>
+#parks-map{height:430px;margin-top:24px;border:1px solid #2b3732;border-radius:8px;overflow:hidden;background:#111815}.map-status{margin:10px 0 0;color:#aebbb7;font-size:.88rem}.leaflet-popup-content a{color:#315d4b}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -254,6 +258,8 @@
           </table>
         </div>
       </div>
+      <div id="parks-map" aria-label="Map of K5KAZ POTA parks"></div>
+      <p class="map-status" id="map-status">Loading park locations from POTA…</p>
       <p class="fine">Detailed park information and current POTA status are maintained by Parks on the Air. <a href="https://pota.app/#/map" target="_blank" rel="noopener noreferrer">Open POTA Map →</a></p>
     </div>
   </div>
@@ -299,3 +305,5 @@
 
 </body>
 </html>
+
+
