@@ -10,6 +10,25 @@
 <style>
 .pota-profile-panel{margin-top:8px}.pota-profile-panel .lead-small{max-width:720px;margin:0 0 18px;color:#aebbb7;line-height:1.7}.pota-profile-panel .btn{display:inline-block}
 </style>
+
+<style>
+.parks-directory{margin-top:24px}
+.parks-toolbar{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:18px}
+.parks-toolbar input,.parks-toolbar select{background:#111815;border:1px solid #35413c;color:#e7eeeb;border-radius:6px;padding:11px 13px;font:inherit}
+.parks-toolbar input{min-width:260px;flex:1}
+.parks-count{color:#aebbb7;font-size:.9rem}
+.parks-table-wrap{overflow:auto;border:1px solid #2b3732;border-radius:8px}
+.parks-table{width:100%;border-collapse:collapse;min-width:620px}
+.parks-table th,.parks-table td{padding:13px 15px;text-align:left;border-bottom:1px solid #29332f}
+.parks-table th{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:#aebbb7;background:#111815}
+.parks-table td{color:#e7eeeb}
+.parks-table tr:last-child td{border-bottom:0}
+.parks-table tr:hover td{background:rgba(255,255,255,.025)}
+.park-ref{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-weight:700;white-space:nowrap}
+.park-link{color:inherit;text-decoration:none}
+.park-link:hover{text-decoration:underline}
+</style>
+
 </head>
 <body>
 <header class="site-header">
@@ -55,9 +74,187 @@
       <div id="activation-list"><div class="notice">Loading recent activations…</div></div>
     </div>
     <div class="panel" id="parks">
-      <div class="panel-title"><h3>My POTA Parks</h3><span class="live">AUTO-UPDATED</span></div>
-      <div id="map"></div>
-      <p class="fine">Park markers are populated from the POTA data cache. Use official park information for navigation; POTA notes that its map locations are approximate. <a href="https://pota.app/">Open POTA →</a></p>
+      <div class="panel-title"><h3>My POTA Parks</h3><span class="live">41 PARKS LISTED</span></div>
+      <p class="lead-small">The parks below are the POTA locations you've provided for K5KAZ. Select a park to open its official POTA park page.</p>
+      <div class="parks-directory">
+        <div class="parks-toolbar">
+          <input id="park-search" type="search" placeholder="Search parks or references…" aria-label="Search parks">
+          <span class="parks-count" id="park-count">41 parks</span>
+        </div>
+        <div class="parks-table-wrap">
+          <table class="parks-table">
+            <thead><tr><th>Reference</th><th>Park</th><th>Link</th></tr></thead>
+            <tbody id="parks-table-body">
+              <tr data-park="us-1928 werner-boyce salt springs state park">
+<td class="park-ref">US-1928</td>
+<td><a class="park-link" href="https://pota.app/#/park/US-1928" target="_blank" rel="noopener noreferrer">Werner-Boyce Salt Springs State Park</a></td>
+<td><a href="https://pota.app/#/park/US-1928" target="_blank" rel="noopener noreferrer">POTA →</a></td>
+</tr><tr data-park="us-1048 monte sano state park">
+<td class="park-ref">US-1048</td>
+<td><a class="park-link" href="https://pota.app/#/park/US-1048" target="_blank" rel="noopener noreferrer">Monte Sano State Park</a></td>
+<td><a href="https://pota.app/#/park/US-1048" target="_blank" rel="noopener noreferrer">POTA →</a></td>
+</tr><tr data-park="us-1917 st. andrews state park">
+<td class="park-ref">US-1917</td>
+<td><a class="park-link" href="https://pota.app/#/park/US-1917" target="_blank" rel="noopener noreferrer">St. Andrews State Park</a></td>
+<td><a href="https://pota.app/#/park/US-1917" target="_blank" rel="noopener noreferrer">POTA →</a></td>
+</tr><tr data-park="us-7465 flat creek state fishing lake">
+<td class="park-ref">US-7465</td>
+<td><a class="park-link" href="https://pota.app/#/park/US-7465" target="_blank" rel="noopener noreferrer">Flat Creek State Fishing Lake</a></td>
+<td><a href="https://pota.app/#/park/US-7465" target="_blank" rel="noopener noreferrer">POTA →</a></td>
+</tr><tr data-park="us-0034 great smoky mountains national park">
+<td class="park-ref">US-0034</td>
+<td><a class="park-link" href="https://pota.app/#/park/US-0034" target="_blank" rel="noopener noreferrer">Great Smoky Mountains National Park</a></td>
+<td><a href="https://pota.app/#/park/US-0034" target="_blank" rel="noopener noreferrer">POTA →</a></td>
+</tr><tr data-park="us-4556 appalachian trail national scenic trail">
+<td class="park-ref">US-4556</td>
+<td><a class="park-link" href="https://pota.app/#/park/US-4556" target="_blank" rel="noopener noreferrer">Appalachian Trail National Scenic Trail</a></td>
+<td><a href="https://pota.app/#/park/US-4556" target="_blank" rel="noopener noreferrer">POTA →</a></td>
+</tr><tr data-park="us-1570 fort frederick state park">
+<td class="park-ref">US-1570</td>
+<td><a class="park-link" href="https://pota.app/#/park/US-1570" target="_blank" rel="noopener noreferrer">Fort Frederick State Park</a></td>
+<td><a href="https://pota.app/#/park/US-1570" target="_blank" rel="noopener noreferrer">POTA →</a></td>
+</tr><tr data-park="us-0062 saratoga national historical park">
+<td class="park-ref">US-0062</td>
+<td><a class="park-link" href="https://pota.app/#/park/US-0062" target="_blank" rel="noopener noreferrer">Saratoga National Historical Park</a></td>
+<td><a href="https://pota.app/#/park/US-0062" target="_blank" rel="noopener noreferrer">POTA →</a></td>
+</tr><tr data-park="us-6876 castle island state park">
+<td class="park-ref">US-6876</td>
+<td><a class="park-link" href="https://pota.app/#/park/US-6876" target="_blank" rel="noopener noreferrer">Castle Island State Park</a></td>
+<td><a href="https://pota.app/#/park/US-6876" target="_blank" rel="noopener noreferrer">POTA →</a></td>
+</tr><tr data-park="us-1708 quaddick state park">
+<td class="park-ref">US-1708</td>
+<td><a class="park-link" href="https://pota.app/#/park/US-1708" target="_blank" rel="noopener noreferrer">Quaddick State Park</a></td>
+<td><a href="https://pota.app/#/park/US-1708" target="_blank" rel="noopener noreferrer">POTA →</a></td>
+</tr><tr data-park="us-0745 minute man national historical park">
+<td class="park-ref">US-0745</td>
+<td><a class="park-link" href="https://pota.app/#/park/US-0745" target="_blank" rel="noopener noreferrer">Minute Man National Historical Park</a></td>
+<td><a href="https://pota.app/#/park/US-0745" target="_blank" rel="noopener noreferrer">POTA →</a></td>
+</tr><tr data-park="us-8414 middlesex fells state reserve">
+<td class="park-ref">US-8414</td>
+<td><a class="park-link" href="https://pota.app/#/park/US-8414" target="_blank" rel="noopener noreferrer">Middlesex Fells State Reserve</a></td>
+<td><a href="https://pota.app/#/park/US-8414" target="_blank" rel="noopener noreferrer">POTA →</a></td>
+</tr><tr data-park="us-2413 vaughan woods state park">
+<td class="park-ref">US-2413</td>
+<td><a class="park-link" href="https://pota.app/#/park/US-2413" target="_blank" rel="noopener noreferrer">Vaughan Woods State Park</a></td>
+<td><a href="https://pota.app/#/park/US-2413" target="_blank" rel="noopener noreferrer">POTA →</a></td>
+</tr><tr data-park="us-8018 fort constitution state historic site">
+<td class="park-ref">US-8018</td>
+<td><a class="park-link" href="https://pota.app/#/park/US-8018" target="_blank" rel="noopener noreferrer">Fort Constitution State Historic Site</a></td>
+<td><a href="https://pota.app/#/park/US-8018" target="_blank" rel="noopener noreferrer">POTA →</a></td>
+</tr><tr data-park="us-1623 liberty state park">
+<td class="park-ref">US-1623</td>
+<td><a class="park-link" href="https://pota.app/#/park/US-1623" target="_blank" rel="noopener noreferrer">Liberty State Park</a></td>
+<td><a href="https://pota.app/#/park/US-1623" target="_blank" rel="noopener noreferrer">POTA →</a></td>
+</tr><tr data-park="us-1732 brandywine creek state park">
+<td class="park-ref">US-1732</td>
+<td><a class="park-link" href="https://pota.app/#/park/US-1732" target="_blank" rel="noopener noreferrer">Brandywine Creek State Park</a></td>
+<td><a href="https://pota.app/#/park/US-1732" target="_blank" rel="noopener noreferrer">POTA →</a></td>
+</tr><tr data-park="us-0761 valley forge national historical park">
+<td class="park-ref">US-0761</td>
+<td><a class="park-link" href="https://pota.app/#/park/US-0761" target="_blank" rel="noopener noreferrer">Valley Forge National Historical Park</a></td>
+<td><a href="https://pota.app/#/park/US-0761" target="_blank" rel="noopener noreferrer">POTA →</a></td>
+</tr><tr data-park="us-8204 yorktown national battlefield">
+<td class="park-ref">US-8204</td>
+<td><a class="park-link" href="https://pota.app/#/park/US-8204" target="_blank" rel="noopener noreferrer">Yorktown National Battlefield</a></td>
+<td><a href="https://pota.app/#/park/US-8204" target="_blank" rel="noopener noreferrer">POTA →</a></td>
+</tr><tr data-park="us-0016 colonial national historical park">
+<td class="park-ref">US-0016</td>
+<td><a class="park-link" href="https://pota.app/#/park/US-0016" target="_blank" rel="noopener noreferrer">Colonial National Historical Park</a></td>
+<td><a href="https://pota.app/#/park/US-0016" target="_blank" rel="noopener noreferrer">POTA →</a></td>
+</tr><tr data-park="us-2175 fort mcallister state park">
+<td class="park-ref">US-2175</td>
+<td><a class="park-link" href="https://pota.app/#/park/US-2175" target="_blank" rel="noopener noreferrer">Fort McAllister State Park</a></td>
+<td><a href="https://pota.app/#/park/US-2175" target="_blank" rel="noopener noreferrer">POTA →</a></td>
+</tr><tr data-park="us-0521 santee national wildlife refuge">
+<td class="park-ref">US-0521</td>
+<td><a class="park-link" href="https://pota.app/#/park/US-0521" target="_blank" rel="noopener noreferrer">Santee National Wildlife Refuge</a></td>
+<td><a href="https://pota.app/#/park/US-0521" target="_blank" rel="noopener noreferrer">POTA →</a></td>
+</tr><tr data-park="us-1904 myakka river state park">
+<td class="park-ref">US-1904</td>
+<td><a class="park-link" href="https://pota.app/#/park/US-1904" target="_blank" rel="noopener noreferrer">Myakka River State Park</a></td>
+<td><a href="https://pota.app/#/park/US-1904" target="_blank" rel="noopener noreferrer">POTA →</a></td>
+</tr><tr data-park="us-1842 blue spring state park">
+<td class="park-ref">US-1842</td>
+<td><a class="park-link" href="https://pota.app/#/park/US-1842" target="_blank" rel="noopener noreferrer">Blue Spring State Park</a></td>
+<td><a href="https://pota.app/#/park/US-1842" target="_blank" rel="noopener noreferrer">POTA →</a></td>
+</tr><tr data-park="us-1853 de leon springs state park">
+<td class="park-ref">US-1853</td>
+<td><a class="park-link" href="https://pota.app/#/park/US-1853" target="_blank" rel="noopener noreferrer">De Leon Springs State Park</a></td>
+<td><a href="https://pota.app/#/park/US-1853" target="_blank" rel="noopener noreferrer">POTA →</a></td>
+</tr><tr data-park="us-1916 skyway fishing pier state park">
+<td class="park-ref">US-1916</td>
+<td><a class="park-link" href="https://pota.app/#/park/US-1916" target="_blank" rel="noopener noreferrer">Skyway Fishing Pier State Park</a></td>
+<td><a href="https://pota.app/#/park/US-1916" target="_blank" rel="noopener noreferrer">POTA →</a></td>
+</tr><tr data-park="us-1898 little manatee river state park">
+<td class="park-ref">US-1898</td>
+<td><a class="park-link" href="https://pota.app/#/park/US-1898" target="_blank" rel="noopener noreferrer">Little Manatee River State Park</a></td>
+<td><a href="https://pota.app/#/park/US-1898" target="_blank" rel="noopener noreferrer">POTA →</a></td>
+</tr><tr data-park="us-1893 lake louisa state park">
+<td class="park-ref">US-1893</td>
+<td><a class="park-link" href="https://pota.app/#/park/US-1893" target="_blank" rel="noopener noreferrer">Lake Louisa State Park</a></td>
+<td><a href="https://pota.app/#/park/US-1893" target="_blank" rel="noopener noreferrer">POTA →</a></td>
+</tr><tr data-park="us-3614 crystal river preserve state park">
+<td class="park-ref">US-3614</td>
+<td><a class="park-link" href="https://pota.app/#/park/US-3614" target="_blank" rel="noopener noreferrer">Crystal River Preserve State Park</a></td>
+<td><a href="https://pota.app/#/park/US-3614" target="_blank" rel="noopener noreferrer">POTA →</a></td>
+</tr><tr data-park="us-3615 dade battlefield state park">
+<td class="park-ref">US-3615</td>
+<td><a class="park-link" href="https://pota.app/#/park/US-3615" target="_blank" rel="noopener noreferrer">Dade Battlefield State Park</a></td>
+<td><a href="https://pota.app/#/park/US-3615" target="_blank" rel="noopener noreferrer">POTA →</a></td>
+</tr><tr data-park="us-1879 homosassa springs wildlife state park">
+<td class="park-ref">US-1879</td>
+<td><a class="park-link" href="https://pota.app/#/park/US-1879" target="_blank" rel="noopener noreferrer">Homosassa Springs Wildlife State Park</a></td>
+<td><a href="https://pota.app/#/park/US-1879" target="_blank" rel="noopener noreferrer">POTA →</a></td>
+</tr><tr data-park="us-1850 crystal river archaeological state park">
+<td class="park-ref">US-1850</td>
+<td><a class="park-link" href="https://pota.app/#/park/US-1850" target="_blank" rel="noopener noreferrer">Crystal River Archaeological State Park</a></td>
+<td><a href="https://pota.app/#/park/US-1850" target="_blank" rel="noopener noreferrer">POTA →</a></td>
+</tr><tr data-park="us-1848 colt creek state park">
+<td class="park-ref">US-1848</td>
+<td><a class="park-link" href="https://pota.app/#/park/US-1848" target="_blank" rel="noopener noreferrer">Colt Creek State Park</a></td>
+<td><a href="https://pota.app/#/park/US-1848" target="_blank" rel="noopener noreferrer">POTA →</a></td>
+</tr><tr data-park="us-1880 honeymoon island state park">
+<td class="park-ref">US-1880</td>
+<td><a class="park-link" href="https://pota.app/#/park/US-1880" target="_blank" rel="noopener noreferrer">Honeymoon Island State Park</a></td>
+<td><a href="https://pota.app/#/park/US-1880" target="_blank" rel="noopener noreferrer">POTA →</a></td>
+</tr><tr data-park="us-1912 rainbow springs state park">
+<td class="park-ref">US-1912</td>
+<td><a class="park-link" href="https://pota.app/#/park/US-1912" target="_blank" rel="noopener noreferrer">Rainbow Springs State Park</a></td>
+<td><a href="https://pota.app/#/park/US-1912" target="_blank" rel="noopener noreferrer">POTA →</a></td>
+</tr><tr data-park="us-3621 fort foster state historic site">
+<td class="park-ref">US-3621</td>
+<td><a class="park-link" href="https://pota.app/#/park/US-3621" target="_blank" rel="noopener noreferrer">Fort Foster State Historic Site</a></td>
+<td><a href="https://pota.app/#/park/US-3621" target="_blank" rel="noopener noreferrer">POTA →</a></td>
+</tr><tr data-park="us-1878 hillsborough river state park">
+<td class="park-ref">US-1878</td>
+<td><a class="park-link" href="https://pota.app/#/park/US-1878" target="_blank" rel="noopener noreferrer">Hillsborough River State Park</a></td>
+<td><a href="https://pota.app/#/park/US-1878" target="_blank" rel="noopener noreferrer">POTA →</a></td>
+</tr><tr data-park="us-1299 first landing state park">
+<td class="park-ref">US-1299</td>
+<td><a class="park-link" href="https://pota.app/#/park/US-1299" target="_blank" rel="noopener noreferrer">First Landing State Park</a></td>
+<td><a href="https://pota.app/#/park/US-1299" target="_blank" rel="noopener noreferrer">POTA →</a></td>
+</tr><tr data-park="us-6296 chassahowitzka wildlife management area">
+<td class="park-ref">US-6296</td>
+<td><a class="park-link" href="https://pota.app/#/park/US-6296" target="_blank" rel="noopener noreferrer">Chassahowitzka Wildlife Management Area</a></td>
+<td><a href="https://pota.app/#/park/US-6296" target="_blank" rel="noopener noreferrer">POTA →</a></td>
+</tr><tr data-park="us-1870 fort cooper state park">
+<td class="park-ref">US-1870</td>
+<td><a class="park-link" href="https://pota.app/#/park/US-1870" target="_blank" rel="noopener noreferrer">Fort Cooper State Park</a></td>
+<td><a href="https://pota.app/#/park/US-1870" target="_blank" rel="noopener noreferrer">POTA →</a></td>
+</tr><tr data-park="us-7475 starkey wilderness/serenova preserve state conservation area">
+<td class="park-ref">US-7475</td>
+<td><a class="park-link" href="https://pota.app/#/park/US-7475" target="_blank" rel="noopener noreferrer">Starkey Wilderness/Serenova Preserve State Conservation Area</a></td>
+<td><a href="https://pota.app/#/park/US-7475" target="_blank" rel="noopener noreferrer">POTA →</a></td>
+</tr><tr data-park="us-0735 harpers ferry national historical park">
+<td class="park-ref">US-0735</td>
+<td><a class="park-link" href="https://pota.app/#/park/US-0735" target="_blank" rel="noopener noreferrer">Harpers Ferry National Historical Park</a></td>
+<td><a href="https://pota.app/#/park/US-0735" target="_blank" rel="noopener noreferrer">POTA →</a></td>
+</tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <p class="fine">Detailed park information and current POTA status are maintained by Parks on the Air. <a href="https://pota.app/#/map" target="_blank" rel="noopener noreferrer">Open POTA Map →</a></p>
     </div>
   </div>
 </section>
@@ -78,5 +275,27 @@
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 <script src="app.js"></script>
+
+<script>
+(function(){
+  const input = document.getElementById('park-search');
+  const body = document.getElementById('parks-table-body');
+  const count = document.getElementById('park-count');
+  if (!input || !body || !count) return;
+  const rows = Array.from(body.querySelectorAll('tr'));
+  function filterParks(){
+    const q = input.value.trim().toLowerCase();
+    let shown = 0;
+    rows.forEach(row => {
+      const match = !q || row.dataset.park.includes(q);
+      row.style.display = match ? '' : 'none';
+      if (match) shown++;
+    });
+    count.textContent = shown + (shown === 1 ? ' park' : ' parks');
+  }
+  input.addEventListener('input', filterParks);
+})();
+</script>
+
 </body>
 </html>
