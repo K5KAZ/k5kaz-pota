@@ -1,450 +1,67 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="K5KAZ Parks on the Air — portable amateur radio adventures.">
 <title>K5KAZ | Parks on the Air</title>
 <link rel="stylesheet" href="styles.css">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
 <style>
-.pota-profile-panel{margin-top:8px}.pota-profile-panel .lead-small{max-width:720px;margin:0 0 18px;color:#aebbb7;line-height:1.7}.pota-profile-panel .btn{display:inline-block}
+.activation-tools{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.activation-tools input,.activation-tools select{background:#0d191d;color:#c8d2cf;border:1px solid #294045;padding:10px 12px;border-radius:3px;font:inherit}
+.activation-tools input{flex:1;min-width:220px}.activation-count{margin-left:auto;color:#8c9b97;font-size:.85rem}
+.activation-table-wrap{overflow-x:auto}.activation-table{width:100%;border-collapse:collapse;min-width:620px}
+.activation-table th,.activation-table td{padding:12px 10px;border-bottom:1px solid #26383c;text-align:left}
+.activation-table th{color:#9fb0ab;font-size:.75rem;letter-spacing:.08em;text-transform:uppercase}
+.activation-table td{color:#d8e0dd}.activation-table tr:hover{background:rgba(255,255,255,.025)}
+.activation-table .qso-cell{text-align:right;white-space:nowrap}.activation-table .date-cell{white-space:nowrap}
+.activation-empty{padding:24px!important;color:#9fb0ab}
+@media(max-width:700px){.activation-tools input{min-width:100%}.activation-count{margin-left:0}}
 </style>
-
-<style>
-.parks-directory{margin-top:24px}
-.parks-toolbar{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:18px}
-.parks-toolbar input,.parks-toolbar select{background:#111815;border:1px solid #35413c;color:#e7eeeb;border-radius:6px;padding:11px 13px;font:inherit}
-.parks-toolbar input{min-width:260px;flex:1}
-.parks-count{color:#aebbb7;font-size:.9rem}
-.parks-table-wrap{overflow:auto;border:1px solid #2b3732;border-radius:8px}
-.parks-table{width:100%;border-collapse:collapse;min-width:620px}
-.parks-table th,.parks-table td{padding:13px 15px;text-align:left;border-bottom:1px solid #29332f}
-.parks-table th{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:#aebbb7;background:#111815}
-.parks-table td{color:#e7eeeb}
-.parks-table tr:last-child td{border-bottom:0}
-.parks-table tr:hover td{background:rgba(255,255,255,.025)}
-.park-ref{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-weight:700;white-space:nowrap}
-.park-link{color:inherit;text-decoration:none}
-.park-link:hover{text-decoration:underline}
-</style>
-
-
-<style>
-#parks-map{height:430px;margin-top:24px;border:1px solid #2b3732;border-radius:8px;overflow:hidden;background:#111815}.map-status{margin:10px 0 0;color:#aebbb7;font-size:.88rem}.leaflet-popup-content a{color:#315d4b}
-</style>
-
-<style>
-.activation-log{margin:28px 0}
-.activation-toolbar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:18px 0}
-.activation-toolbar input,.activation-toolbar select{background:#111815;border:1px solid #35413c;color:#e7eeeb;border-radius:6px;padding:11px 13px;font:inherit}
-.activation-toolbar input{min-width:260px;flex:1}
-.activation-count{color:#aebbb7;font-size:.9rem}
-.activation-table-wrap{overflow:auto;border:1px solid #2b3732;border-radius:8px}
-.activation-table{width:100%;border-collapse:collapse;min-width:760px}
-.activation-table th,.activation-table td{padding:13px 15px;text-align:left;border-bottom:1px solid #29332f}
-.activation-table th{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:#aebbb7;background:#111815}
-.activation-table td{color:#e7eeeb}
-.activation-table tr:last-child td{border-bottom:0}
-.activation-table tr:hover td{background:rgba(255,255,255,.025)}
-.activation-ref{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-weight:700;white-space:nowrap}
-.activation-link{color:inherit;text-decoration:none}
-.activation-link:hover{text-decoration:underline}
-</style>
-
 </head>
 <body>
-<header class="site-header">
-  <div class="wrap nav">
-    <a class="brand" href="#home"><strong>K5KAZ</strong><span>PARKS ON THE AIR</span><small>PORTABLE AMATEUR RADIO</small></a>
-    <nav>
-      <a href="#home">Home</a><a href="#activations">Activations</a><a href="#parks">My Parks</a>
-      <a href="#photos">Photos</a><a href="#about">About K5KAZ</a>
-    </nav>
-  </div>
-</header>
-
+<header class="site-header"><div class="wrap nav">
+<a class="brand" href="#home"><strong>K5KAZ</strong><span>PARKS ON THE AIR</span><small>PORTABLE AMATEUR RADIO</small></a>
+<nav><a href="#home">Home</a><a href="#activations">Activations</a><a href="#parks">My Parks</a><a href="#gear">Station &amp; Gear</a><a href="#photos">Photos</a><a href="#about">About K5KAZ</a></nav>
+</div></header>
 <main id="home">
-<section class="hero">
-  <div class="hero-shade"></div>
-  <div class="wrap hero-inner">
-    <div>
-      <p class="eyebrow">PARKS ON THE AIR • K5KAZ</p>
-      <h1>Radio.<br><em>Parks.</em><br>Adventure.</h1>
-      <p class="lead">Portable amateur radio from parks and public lands. Follow my activations, explore the parks I've worked, and see the station that goes into the field.</p>
-      <a class="btn" href="#activations">Explore my activations <b>→</b></a>
-    </div>
-  </div>
-</section>
-
+<section class="hero"><div class="hero-shade"></div><div class="wrap hero-inner"><div>
+<p class="eyebrow">PARKS ON THE AIR • K5KAZ</p><h1>Radio.<br><em>Parks.</em><br>Adventure.</h1>
+<p class="lead">Portable amateur radio from parks and public lands. Follow my activations, explore the parks I've worked, and see the station that goes into the field.</p>
+<a class="btn" href="#activations">Explore my activations <b>→</b></a>
+</div></div></section>
 <section class="stats">
-  <div><b id="activations-stat">—</b><span>POTA ACTIVATIONS</span></div>
-  <div><b id="parks-stat">—</b><span>PARKS ACTIVATED</span></div>
-  <div><b id="qsos-stat">—</b><span>TOTAL QSOs</span></div>
-  <div><b id="states-stat">—</b><span>STATES</span></div>
+<div><b id="activations-stat">—</b><span>POTA ACTIVATIONS</span></div><div><b id="parks-stat">—</b><span>PARKS ACTIVATED</span></div>
+<div><b id="qsos-stat">—</b><span>TOTAL QSOs</span></div><div><b id="states-stat">—</b><span>STATES</span></div>
 </section>
-
-
-<section id="activation-log" class="panel activation-log">
-  <div class="panel-title">
-    <h3>K5KAZ Activation Log</h3>
-    <span class="live">CSV LOG</span>
-  </div>
-  <p class="lead-small">A record of K5KAZ POTA activations imported from the supplied activation log.</p>
-  <div class="activation-toolbar">
-    <input id="activation-search" type="search" placeholder="Search by park, reference, state, or date…" aria-label="Search activations">
-    <select id="activation-sort" aria-label="Sort activations">
-      <option value="newest">Newest first</option>
-      <option value="oldest">Oldest first</option>
-      <option value="qso-high">Most QSOs</option>
-      <option value="qso-low">Fewest QSOs</option>
-      <option value="park">Park A–Z</option>
-    </select>
-    <span class="activation-count" id="activation-count">0 activations</span>
-  </div>
-  <div class="activation-table-wrap">
-    <table class="activation-table">
-      <thead><tr><th>Date</th><th>Park</th><th>Name</th><th>State</th><th>QSOs</th></tr></thead>
-      <tbody id="activation-table-body"></tbody>
-    </table>
-  </div>
-</section>
-
-
-<section class="section wrap" id="station">
-  <div class="heading">
-    <div><p class="eyebrow">THE K5KAZ SHACK</p><h2>Station &amp; Gear</h2></div>
-    <a href="https://www.qrz.com/db/K5KAZ" target="_blank" rel="noopener noreferrer">View my QRZ page →</a>
-  </div>
-
-  <div class="station-intro">
-    <div class="panel station-copy">
-      <div class="panel-title"><h3>About K5KAZ</h3><span class="live">AMATEUR RADIO</span></div>
-      <p>Originally from Boston, MA. Moved to Hudson, FL in 2013.</p>
-      <p>Retired from Verizon Communications, formerly New England Telephone, after 36 years.</p>
-      <p>Got my Ham radio Technician license in April 2022. Upgraded to General in September 2022. Upgraded to Extra in September 2026.</p>
-      <p>Joined GCARC (Gulf Coast Amateur Radio Club) in June 2022.</p>
-      <a class="btn" href="https://www.qrz.com/db/K5KAZ" target="_blank" rel="noopener noreferrer">View My QRZ Page <b>→</b></a>
-    </div>
-    <div class="panel station-logo">
-      <img src="assets/station/gcarc_blu_png.jpg" alt="Gulf Coast Amateur Radio Club logo">
-    </div>
-  </div>
-
-  <div class="gear-grid">
-    <article class="gear-card">
-      <div class="gear-image"><img src="assets/station/shack_01_24.jpg" alt="K5KAZ home radio shack"></div>
-      <div class="gear-body">
-        <span class="gear-label">HOME STATION</span>
-        <h3>HF &amp; VHF/UHF</h3>
-        <ul>
-          <li><strong>HF:</strong> Yaesu FT-710 AES</li>
-          <li><strong>VHF/UHF:</strong> ICOM IC-2730</li>
-        </ul>
-        <p>The home station is where I spend time operating, experimenting, and preparing for the next outing.</p>
-      </div>
-    </article>
-
-    <article class="gear-card">
-      <div class="gear-image"><img src="assets/station/pota_pic.jpg" alt="K5KAZ operating portable during a POTA outing"></div>
-      <div class="gear-body">
-        <span class="gear-label">PORTABLE / POTA</span>
-        <h3>Field Operations</h3>
-        <ul>
-          <li><strong>Radio:</strong> Yaesu FT-891</li>
-          <li><strong>Antennas:</strong> EFHW Spooltenna, BuddiStick Pro, 17 ft telescopic whip</li>
-        </ul>
-        <p>Portable operation is a big part of my ham-radio activity, especially getting out into parks and making contacts from the field.</p>
-      </div>
-    </article>
-
-    <article class="gear-card">
-      <div class="gear-image"><img src="assets/station/ft_891.jpg" alt="Yaesu FT-891 radio"></div>
-      <div class="gear-body">
-        <span class="gear-label">MOBILE</span>
-        <h3>Mobile Setup</h3>
-        <ul>
-          <li><strong>Radio:</strong> Yaesu FTX-1 Optima</li>
-          <li><strong>Antenna:</strong> ATAS-120A</li>
-        </ul>
-        <p>A mobile setup gives me another way to stay active on the air while traveling between locations.</p>
-      </div>
-    </article>
-  </div>
-</section>
-
 <section class="section wrap" id="activations">
-  <div class="heading"><div><p class="eyebrow">FIELD LOG</p><h2>POTA Activations</h2></div><a href="#parks">View my parks →</a></div>
-  <div class="panel pota-profile-panel">
-    <div class="panel-title"><h3>K5KAZ on Parks on the Air</h3><span class="live">POTA PROFILE</span></div>
-    <p class="lead-small">My complete activation history, awards, and current POTA activity are available directly on my POTA profile.</p>
-    <a class="btn" href="https://pota.app/#/profile/K5KAZ" target="_blank" rel="noopener noreferrer">View My POTA Profile <b>→</b></a>
-  </div>
-  <div class="grid2" style="margin-top:24px">
-    <div class="panel">
-      <div class="panel-title"><h3>Recent Activations</h3><span class="live">AUTO-UPDATED</span></div>
-      <div id="activation-list"><div class="notice">Loading recent activations…</div></div>
-    </div>
-    <div class="panel" id="parks">
-      <div class="panel-title"><h3>My POTA Parks</h3><span class="live">41 PARKS LISTED</span></div>
-      <p class="lead-small">The parks below are the POTA locations you've provided for K5KAZ. Select a park to open its official POTA park page.</p>
-      <div class="parks-directory">
-        <div class="parks-toolbar">
-          <input id="park-search" type="search" placeholder="Search parks or references…" aria-label="Search parks">
-          <span class="parks-count" id="park-count">41 parks</span>
-        </div>
-        <div class="parks-table-wrap">
-          <table class="parks-table">
-            <thead><tr><th>Reference</th><th>Park</th><th>Link</th></tr></thead>
-            <tbody id="parks-table-body">
-              <tr data-park="us-1928 werner-boyce salt springs state park">
-<td class="park-ref">US-1928</td>
-<td><a class="park-link" href="https://pota.app/#/park/US-1928" target="_blank" rel="noopener noreferrer">Werner-Boyce Salt Springs State Park</a></td>
-<td><a href="https://pota.app/#/park/US-1928" target="_blank" rel="noopener noreferrer">POTA →</a></td>
-</tr><tr data-park="us-1048 monte sano state park">
-<td class="park-ref">US-1048</td>
-<td><a class="park-link" href="https://pota.app/#/park/US-1048" target="_blank" rel="noopener noreferrer">Monte Sano State Park</a></td>
-<td><a href="https://pota.app/#/park/US-1048" target="_blank" rel="noopener noreferrer">POTA →</a></td>
-</tr><tr data-park="us-1917 st. andrews state park">
-<td class="park-ref">US-1917</td>
-<td><a class="park-link" href="https://pota.app/#/park/US-1917" target="_blank" rel="noopener noreferrer">St. Andrews State Park</a></td>
-<td><a href="https://pota.app/#/park/US-1917" target="_blank" rel="noopener noreferrer">POTA →</a></td>
-</tr><tr data-park="us-7465 flat creek state fishing lake">
-<td class="park-ref">US-7465</td>
-<td><a class="park-link" href="https://pota.app/#/park/US-7465" target="_blank" rel="noopener noreferrer">Flat Creek State Fishing Lake</a></td>
-<td><a href="https://pota.app/#/park/US-7465" target="_blank" rel="noopener noreferrer">POTA →</a></td>
-</tr><tr data-park="us-0034 great smoky mountains national park">
-<td class="park-ref">US-0034</td>
-<td><a class="park-link" href="https://pota.app/#/park/US-0034" target="_blank" rel="noopener noreferrer">Great Smoky Mountains National Park</a></td>
-<td><a href="https://pota.app/#/park/US-0034" target="_blank" rel="noopener noreferrer">POTA →</a></td>
-</tr><tr data-park="us-4556 appalachian trail national scenic trail">
-<td class="park-ref">US-4556</td>
-<td><a class="park-link" href="https://pota.app/#/park/US-4556" target="_blank" rel="noopener noreferrer">Appalachian Trail National Scenic Trail</a></td>
-<td><a href="https://pota.app/#/park/US-4556" target="_blank" rel="noopener noreferrer">POTA →</a></td>
-</tr><tr data-park="us-1570 fort frederick state park">
-<td class="park-ref">US-1570</td>
-<td><a class="park-link" href="https://pota.app/#/park/US-1570" target="_blank" rel="noopener noreferrer">Fort Frederick State Park</a></td>
-<td><a href="https://pota.app/#/park/US-1570" target="_blank" rel="noopener noreferrer">POTA →</a></td>
-</tr><tr data-park="us-0062 saratoga national historical park">
-<td class="park-ref">US-0062</td>
-<td><a class="park-link" href="https://pota.app/#/park/US-0062" target="_blank" rel="noopener noreferrer">Saratoga National Historical Park</a></td>
-<td><a href="https://pota.app/#/park/US-0062" target="_blank" rel="noopener noreferrer">POTA →</a></td>
-</tr><tr data-park="us-6876 castle island state park">
-<td class="park-ref">US-6876</td>
-<td><a class="park-link" href="https://pota.app/#/park/US-6876" target="_blank" rel="noopener noreferrer">Castle Island State Park</a></td>
-<td><a href="https://pota.app/#/park/US-6876" target="_blank" rel="noopener noreferrer">POTA →</a></td>
-</tr><tr data-park="us-1708 quaddick state park">
-<td class="park-ref">US-1708</td>
-<td><a class="park-link" href="https://pota.app/#/park/US-1708" target="_blank" rel="noopener noreferrer">Quaddick State Park</a></td>
-<td><a href="https://pota.app/#/park/US-1708" target="_blank" rel="noopener noreferrer">POTA →</a></td>
-</tr><tr data-park="us-0745 minute man national historical park">
-<td class="park-ref">US-0745</td>
-<td><a class="park-link" href="https://pota.app/#/park/US-0745" target="_blank" rel="noopener noreferrer">Minute Man National Historical Park</a></td>
-<td><a href="https://pota.app/#/park/US-0745" target="_blank" rel="noopener noreferrer">POTA →</a></td>
-</tr><tr data-park="us-8414 middlesex fells state reserve">
-<td class="park-ref">US-8414</td>
-<td><a class="park-link" href="https://pota.app/#/park/US-8414" target="_blank" rel="noopener noreferrer">Middlesex Fells State Reserve</a></td>
-<td><a href="https://pota.app/#/park/US-8414" target="_blank" rel="noopener noreferrer">POTA →</a></td>
-</tr><tr data-park="us-2413 vaughan woods state park">
-<td class="park-ref">US-2413</td>
-<td><a class="park-link" href="https://pota.app/#/park/US-2413" target="_blank" rel="noopener noreferrer">Vaughan Woods State Park</a></td>
-<td><a href="https://pota.app/#/park/US-2413" target="_blank" rel="noopener noreferrer">POTA →</a></td>
-</tr><tr data-park="us-8018 fort constitution state historic site">
-<td class="park-ref">US-8018</td>
-<td><a class="park-link" href="https://pota.app/#/park/US-8018" target="_blank" rel="noopener noreferrer">Fort Constitution State Historic Site</a></td>
-<td><a href="https://pota.app/#/park/US-8018" target="_blank" rel="noopener noreferrer">POTA →</a></td>
-</tr><tr data-park="us-1623 liberty state park">
-<td class="park-ref">US-1623</td>
-<td><a class="park-link" href="https://pota.app/#/park/US-1623" target="_blank" rel="noopener noreferrer">Liberty State Park</a></td>
-<td><a href="https://pota.app/#/park/US-1623" target="_blank" rel="noopener noreferrer">POTA →</a></td>
-</tr><tr data-park="us-1732 brandywine creek state park">
-<td class="park-ref">US-1732</td>
-<td><a class="park-link" href="https://pota.app/#/park/US-1732" target="_blank" rel="noopener noreferrer">Brandywine Creek State Park</a></td>
-<td><a href="https://pota.app/#/park/US-1732" target="_blank" rel="noopener noreferrer">POTA →</a></td>
-</tr><tr data-park="us-0761 valley forge national historical park">
-<td class="park-ref">US-0761</td>
-<td><a class="park-link" href="https://pota.app/#/park/US-0761" target="_blank" rel="noopener noreferrer">Valley Forge National Historical Park</a></td>
-<td><a href="https://pota.app/#/park/US-0761" target="_blank" rel="noopener noreferrer">POTA →</a></td>
-</tr><tr data-park="us-8204 yorktown national battlefield">
-<td class="park-ref">US-8204</td>
-<td><a class="park-link" href="https://pota.app/#/park/US-8204" target="_blank" rel="noopener noreferrer">Yorktown National Battlefield</a></td>
-<td><a href="https://pota.app/#/park/US-8204" target="_blank" rel="noopener noreferrer">POTA →</a></td>
-</tr><tr data-park="us-0016 colonial national historical park">
-<td class="park-ref">US-0016</td>
-<td><a class="park-link" href="https://pota.app/#/park/US-0016" target="_blank" rel="noopener noreferrer">Colonial National Historical Park</a></td>
-<td><a href="https://pota.app/#/park/US-0016" target="_blank" rel="noopener noreferrer">POTA →</a></td>
-</tr><tr data-park="us-2175 fort mcallister state park">
-<td class="park-ref">US-2175</td>
-<td><a class="park-link" href="https://pota.app/#/park/US-2175" target="_blank" rel="noopener noreferrer">Fort McAllister State Park</a></td>
-<td><a href="https://pota.app/#/park/US-2175" target="_blank" rel="noopener noreferrer">POTA →</a></td>
-</tr><tr data-park="us-0521 santee national wildlife refuge">
-<td class="park-ref">US-0521</td>
-<td><a class="park-link" href="https://pota.app/#/park/US-0521" target="_blank" rel="noopener noreferrer">Santee National Wildlife Refuge</a></td>
-<td><a href="https://pota.app/#/park/US-0521" target="_blank" rel="noopener noreferrer">POTA →</a></td>
-</tr><tr data-park="us-1904 myakka river state park">
-<td class="park-ref">US-1904</td>
-<td><a class="park-link" href="https://pota.app/#/park/US-1904" target="_blank" rel="noopener noreferrer">Myakka River State Park</a></td>
-<td><a href="https://pota.app/#/park/US-1904" target="_blank" rel="noopener noreferrer">POTA →</a></td>
-</tr><tr data-park="us-1842 blue spring state park">
-<td class="park-ref">US-1842</td>
-<td><a class="park-link" href="https://pota.app/#/park/US-1842" target="_blank" rel="noopener noreferrer">Blue Spring State Park</a></td>
-<td><a href="https://pota.app/#/park/US-1842" target="_blank" rel="noopener noreferrer">POTA →</a></td>
-</tr><tr data-park="us-1853 de leon springs state park">
-<td class="park-ref">US-1853</td>
-<td><a class="park-link" href="https://pota.app/#/park/US-1853" target="_blank" rel="noopener noreferrer">De Leon Springs State Park</a></td>
-<td><a href="https://pota.app/#/park/US-1853" target="_blank" rel="noopener noreferrer">POTA →</a></td>
-</tr><tr data-park="us-1916 skyway fishing pier state park">
-<td class="park-ref">US-1916</td>
-<td><a class="park-link" href="https://pota.app/#/park/US-1916" target="_blank" rel="noopener noreferrer">Skyway Fishing Pier State Park</a></td>
-<td><a href="https://pota.app/#/park/US-1916" target="_blank" rel="noopener noreferrer">POTA →</a></td>
-</tr><tr data-park="us-1898 little manatee river state park">
-<td class="park-ref">US-1898</td>
-<td><a class="park-link" href="https://pota.app/#/park/US-1898" target="_blank" rel="noopener noreferrer">Little Manatee River State Park</a></td>
-<td><a href="https://pota.app/#/park/US-1898" target="_blank" rel="noopener noreferrer">POTA →</a></td>
-</tr><tr data-park="us-1893 lake louisa state park">
-<td class="park-ref">US-1893</td>
-<td><a class="park-link" href="https://pota.app/#/park/US-1893" target="_blank" rel="noopener noreferrer">Lake Louisa State Park</a></td>
-<td><a href="https://pota.app/#/park/US-1893" target="_blank" rel="noopener noreferrer">POTA →</a></td>
-</tr><tr data-park="us-3614 crystal river preserve state park">
-<td class="park-ref">US-3614</td>
-<td><a class="park-link" href="https://pota.app/#/park/US-3614" target="_blank" rel="noopener noreferrer">Crystal River Preserve State Park</a></td>
-<td><a href="https://pota.app/#/park/US-3614" target="_blank" rel="noopener noreferrer">POTA →</a></td>
-</tr><tr data-park="us-3615 dade battlefield state park">
-<td class="park-ref">US-3615</td>
-<td><a class="park-link" href="https://pota.app/#/park/US-3615" target="_blank" rel="noopener noreferrer">Dade Battlefield State Park</a></td>
-<td><a href="https://pota.app/#/park/US-3615" target="_blank" rel="noopener noreferrer">POTA →</a></td>
-</tr><tr data-park="us-1879 homosassa springs wildlife state park">
-<td class="park-ref">US-1879</td>
-<td><a class="park-link" href="https://pota.app/#/park/US-1879" target="_blank" rel="noopener noreferrer">Homosassa Springs Wildlife State Park</a></td>
-<td><a href="https://pota.app/#/park/US-1879" target="_blank" rel="noopener noreferrer">POTA →</a></td>
-</tr><tr data-park="us-1850 crystal river archaeological state park">
-<td class="park-ref">US-1850</td>
-<td><a class="park-link" href="https://pota.app/#/park/US-1850" target="_blank" rel="noopener noreferrer">Crystal River Archaeological State Park</a></td>
-<td><a href="https://pota.app/#/park/US-1850" target="_blank" rel="noopener noreferrer">POTA →</a></td>
-</tr><tr data-park="us-1848 colt creek state park">
-<td class="park-ref">US-1848</td>
-<td><a class="park-link" href="https://pota.app/#/park/US-1848" target="_blank" rel="noopener noreferrer">Colt Creek State Park</a></td>
-<td><a href="https://pota.app/#/park/US-1848" target="_blank" rel="noopener noreferrer">POTA →</a></td>
-</tr><tr data-park="us-1880 honeymoon island state park">
-<td class="park-ref">US-1880</td>
-<td><a class="park-link" href="https://pota.app/#/park/US-1880" target="_blank" rel="noopener noreferrer">Honeymoon Island State Park</a></td>
-<td><a href="https://pota.app/#/park/US-1880" target="_blank" rel="noopener noreferrer">POTA →</a></td>
-</tr><tr data-park="us-1912 rainbow springs state park">
-<td class="park-ref">US-1912</td>
-<td><a class="park-link" href="https://pota.app/#/park/US-1912" target="_blank" rel="noopener noreferrer">Rainbow Springs State Park</a></td>
-<td><a href="https://pota.app/#/park/US-1912" target="_blank" rel="noopener noreferrer">POTA →</a></td>
-</tr><tr data-park="us-3621 fort foster state historic site">
-<td class="park-ref">US-3621</td>
-<td><a class="park-link" href="https://pota.app/#/park/US-3621" target="_blank" rel="noopener noreferrer">Fort Foster State Historic Site</a></td>
-<td><a href="https://pota.app/#/park/US-3621" target="_blank" rel="noopener noreferrer">POTA →</a></td>
-</tr><tr data-park="us-1878 hillsborough river state park">
-<td class="park-ref">US-1878</td>
-<td><a class="park-link" href="https://pota.app/#/park/US-1878" target="_blank" rel="noopener noreferrer">Hillsborough River State Park</a></td>
-<td><a href="https://pota.app/#/park/US-1878" target="_blank" rel="noopener noreferrer">POTA →</a></td>
-</tr><tr data-park="us-1299 first landing state park">
-<td class="park-ref">US-1299</td>
-<td><a class="park-link" href="https://pota.app/#/park/US-1299" target="_blank" rel="noopener noreferrer">First Landing State Park</a></td>
-<td><a href="https://pota.app/#/park/US-1299" target="_blank" rel="noopener noreferrer">POTA →</a></td>
-</tr><tr data-park="us-6296 chassahowitzka wildlife management area">
-<td class="park-ref">US-6296</td>
-<td><a class="park-link" href="https://pota.app/#/park/US-6296" target="_blank" rel="noopener noreferrer">Chassahowitzka Wildlife Management Area</a></td>
-<td><a href="https://pota.app/#/park/US-6296" target="_blank" rel="noopener noreferrer">POTA →</a></td>
-</tr><tr data-park="us-1870 fort cooper state park">
-<td class="park-ref">US-1870</td>
-<td><a class="park-link" href="https://pota.app/#/park/US-1870" target="_blank" rel="noopener noreferrer">Fort Cooper State Park</a></td>
-<td><a href="https://pota.app/#/park/US-1870" target="_blank" rel="noopener noreferrer">POTA →</a></td>
-</tr><tr data-park="us-7475 starkey wilderness/serenova preserve state conservation area">
-<td class="park-ref">US-7475</td>
-<td><a class="park-link" href="https://pota.app/#/park/US-7475" target="_blank" rel="noopener noreferrer">Starkey Wilderness/Serenova Preserve State Conservation Area</a></td>
-<td><a href="https://pota.app/#/park/US-7475" target="_blank" rel="noopener noreferrer">POTA →</a></td>
-</tr><tr data-park="us-0735 harpers ferry national historical park">
-<td class="park-ref">US-0735</td>
-<td><a class="park-link" href="https://pota.app/#/park/US-0735" target="_blank" rel="noopener noreferrer">Harpers Ferry National Historical Park</a></td>
-<td><a href="https://pota.app/#/park/US-0735" target="_blank" rel="noopener noreferrer">POTA →</a></td>
-</tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div id="parks-map" aria-label="Map of K5KAZ POTA parks"></div>
-      <p class="map-status" id="map-status">Loading park locations from POTA…</p>
-      <p class="fine">Detailed park information and current POTA status are maintained by Parks on the Air. <a href="https://pota.app/#/map" target="_blank" rel="noopener noreferrer">Open POTA Map →</a></p>
-    </div>
-  </div>
-</section>
-
-<section class="feature-band">
-  <div class="wrap cards">
-    <article id="gear"><div class="card-photo gear"></div><div class="card-body"><span>⌁</span><h3>Station &amp; Gear</h3><p>Radios, antennas, batteries, logging and the equipment I carry into the field.</p><a href="#gear">Explore the gear →</a></div></article>
-    <article id="photos"><div class="card-photo photos"></div><div class="card-body"><span>▣</span><h3>Photos</h3><p>Activation setups, parks, antennas, radios and the outdoors.</p><a href="#photos">View the gallery →</a></div></article>
-    <article id="about"><div class="card-photo about"></div><div class="card-body"><span>●</span><h3>About K5KAZ</h3><p>The story behind the callsign, portable operating and my POTA adventures.</p><a href="#about">Learn more →</a></div></article>
-  </div>
-</section>
-
-<section class="section wrap">
-  <div class="callout"><div><p class="eyebrow">PARKS ON THE AIR</p><h2>Same radios. New horizons.</h2><p>Every activation is a chance to get outside, make contacts, and enjoy the hobby from somewhere new.</p></div><div class="signature">73 de<br><strong>K5KAZ</strong></div></div>
-</section>
+<div class="heading"><div><p class="eyebrow">FIELD LOG</p><h2>POTA Activations</h2></div><a href="#parks">View my parks →</a></div>
+<a class="btn" href="https://pota.app/#/profile/K5KAZ" target="_blank" rel="noopener noreferrer">View My POTA Profile <b>→</b></a>
+<div class="panel">
+<div class="panel-title"><h3>Activation History</h3><span class="live">AUTO-UPDATED</span></div>
+<div class="activation-tools">
+<input id="activation-search" type="search" placeholder="Search park reference or park name…">
+<select id="activation-sort" aria-label="Sort activations">
+<option value="date-desc">Newest first</option><option value="date-asc">Oldest first</option>
+<option value="qso-desc">Most QSOs</option><option value="qso-asc">Fewest QSOs</option><option value="park-asc">Park A–Z</option>
+</select><span id="activation-count" class="activation-count"></span>
+</div>
+<div class="activation-table-wrap"><table class="activation-table">
+<thead><tr><th>Date</th><th>Park</th><th>Name</th><th>QSOs</th></tr></thead>
+<tbody id="activation-table-body"><tr><td colspan="4" class="activation-empty">Waiting for the first POTA data sync…</td></tr></tbody>
+</table></div></div>
+<div class="grid2" style="margin-top:24px">
+<div class="panel"><div class="panel-title"><h3>Recent Activations</h3><span class="live">LIVE DATA</span></div><div id="activation-list"><div class="notice">Loading recent activations…</div></div></div>
+<div class="panel" id="parks"><div class="panel-title"><h3>My POTA Parks</h3><span class="live">AUTO-UPDATED</span></div>
+<div id="map"></div><p class="fine">Park markers are populated from the POTA data cache. Use official park information for navigation; POTA notes that its map locations are approximate. <a href="https://pota.app/">Open POTA →</a></p></div>
+</div></section>
+<section class="feature-band"><div class="wrap cards">
+<article id="gear"><div class="card-photo gear"></div><div class="card-body"><span>⌁</span><h3>Station &amp; Gear</h3><p>Radios, antennas, batteries, logging and the equipment I carry into the field.</p><a href="#gear">Explore the gear →</a></div></article>
+<article id="photos"><div class="card-photo photos"></div><div class="card-body"><span>▣</span><h3>Photos</h3><p>Activation setups, parks, antennas, radios and the outdoors.</p><a href="#photos">View the gallery →</a></div></article>
+<article id="about"><div class="card-photo about"></div><div class="card-body"><span>●</span><h3>About K5KAZ</h3><p>The story behind the callsign, portable operating and my POTA adventures.</p><a href="#about">Learn more →</a></div></article>
+</div></section>
+<section class="section wrap"><div class="callout"><div><p class="eyebrow">PARKS ON THE AIR</p><h2>Same radios. New horizons.</h2><p>Every activation is a chance to get outside, make contacts, and enjoy the hobby from somewhere new.</p></div><div class="signature">73 de<br><strong>K5KAZ</strong></div></div></section>
 </main>
 <footer><div class="wrap footer"><span><strong>K5KAZ</strong> &nbsp;|&nbsp; Parks on the Air &nbsp;|&nbsp; Portable Amateur Radio</span><span>73 and hope to hear you on the air.</span></div></footer>
-
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-<script src="app.js"></script>
-
-<script>
-(function(){
-  const input = document.getElementById('park-search');
-  const body = document.getElementById('parks-table-body');
-  const count = document.getElementById('park-count');
-  if (!input || !body || !count) return;
-  const rows = Array.from(body.querySelectorAll('tr'));
-  function filterParks(){
-    const q = input.value.trim().toLowerCase();
-    let shown = 0;
-    rows.forEach(row => {
-      const match = !q || row.dataset.park.includes(q);
-      row.style.display = match ? '' : 'none';
-      if (match) shown++;
-    });
-    count.textContent = shown + (shown === 1 ? ' park' : ' parks');
-  }
-  input.addEventListener('input', filterParks);
-})();
-</script>
-
-
-<script>
-window.K5KAZ_CSV_ACTIVATIONS = [{"date":"9/15/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"13"},{"date":"9/5/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"36"},{"date":"9/2/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"39"},{"date":"8/30/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"17"},{"date":"8/29/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"21"},{"date":"8/24/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"14"},{"date":"8/20/2026","callsign":"K5KAZ","ref":"US-1048","name":"Monte Sano State Park","state":"AL","qso":"12"},{"date":"8/18/2026","callsign":"K5KAZ","ref":"US-1917","name":"St. Andrews State Park","state":"FL","qso":"15"},{"date":"8/15/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"27"},{"date":"8/10/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"17"},{"date":"8/9/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"23"},{"date":"8/6/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"3"},{"date":"7/31/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"19"},{"date":"7/26/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"18"},{"date":"7/24/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"14"},{"date":"7/23/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"12"},{"date":"7/22/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"21"},{"date":"7/21/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"11"},{"date":"7/16/2026","callsign":"K5KAZ","ref":"US-7465","name":"Flat Creek State Fishing Lake","state":"GA","qso":"10"},{"date":"7/16/2026","callsign":"K5KAZ","ref":"US-0034","name":"Great Smoky Mountains National Park","state":"NC","qso":"12"},{"date":"7/15/2026","callsign":"K5KAZ","ref":"US-4556","name":"Appalachian Trail National Scenic Trail","state":"NC","qso":"8"},{"date":"7/15/2026","callsign":"K5KAZ","ref":"US-0034","name":"Great Smoky Mountains National Park","state":"NC","qso":"8"},{"date":"7/14/2026","callsign":"K5KAZ","ref":"US-1570","name":"Fort Frederick State Park","state":"MD","qso":"15"},{"date":"7/13/2026","callsign":"K5KAZ","ref":"US-0062","name":"Saratoga National Historical Park","state":"NY","qso":"13"},{"date":"7/9/2026","callsign":"K5KAZ","ref":"US-6876","name":"Castle Island State Park","state":"MA","qso":"13"},{"date":"7/8/2026","callsign":"K5KAZ","ref":"US-6985","name":"Round Top Wildlife Management Area","state":"RI","qso":"2"},{"date":"7/8/2026","callsign":"K5KAZ","ref":"US-1708","name":"Quaddick State Park","state":"CT","qso":"12"},{"date":"7/8/2026","callsign":"K5KAZ","ref":"US-7714","name":"Buck Hill Wildlife Management Area","state":"RI","qso":"1"},{"date":"7/4/2026","callsign":"K5KAZ","ref":"US-0745","name":"Minute Man National Historical Park","state":"MA","qso":"32"},{"date":"7/3/2026","callsign":"K5KAZ","ref":"US-8414","name":"Middlesex Fells State Reserve","state":"MA","qso":"14"},{"date":"7/1/2026","callsign":"K5KAZ","ref":"US-2413","name":"Vaughan Woods State Park","state":"ME","qso":"15"},{"date":"6/30/2026","callsign":"K5KAZ","ref":"US-8018","name":"Fort Constitution State Historic Site","state":"NH","qso":"11"},{"date":"6/29/2026","callsign":"K5KAZ","ref":"US-0745","name":"Minute Man National Historical Park","state":"MA","qso":"22"},{"date":"6/27/2026","callsign":"K5KAZ","ref":"US-1623","name":"Liberty State Park","state":"NJ","qso":"11"},{"date":"6/26/2026","callsign":"K5KAZ","ref":"US-1732","name":"Brandywine Creek State Park","state":"DE","qso":"14"},{"date":"6/26/2026","callsign":"K5KAZ","ref":"US-0761","name":"Valley Forge National Historical Park","state":"PA","qso":"16"},{"date":"6/25/2026","callsign":"K5KAZ","ref":"US-8204","name":"Yorktown National Battlefield","state":"VA","qso":"13"},{"date":"6/25/2026","callsign":"K5KAZ","ref":"US-0016","name":"Colonial National Historical Park","state":"VA","qso":"13"},{"date":"6/24/2026","callsign":"K5KAZ","ref":"US-2175","name":"Fort McAllister State Park","state":"GA","qso":"22"},{"date":"6/24/2026","callsign":"K5KAZ","ref":"US-0521","name":"Santee National Wildlife Refuge","state":"SC","qso":"12"},{"date":"6/20/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"12"},{"date":"6/19/2026","callsign":"K5KAZ","ref":"US-1904","name":"Myakka River State Park","state":"FL","qso":"21"},{"date":"6/14/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"15"},{"date":"6/7/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"16"},{"date":"6/2/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"15"},{"date":"6/1/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"13"},{"date":"5/30/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"29"},{"date":"5/28/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"13"},{"date":"5/27/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"20"},{"date":"5/26/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":""},{"date":"5/21/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"17"},{"date":"5/18/2026","callsign":"K5KAZ","ref":"US-1842","name":"Blue Spring State Park","state":"FL","qso":"11"},{"date":"5/18/2026","callsign":"K5KAZ","ref":"US-1853","name":"De Leon Springs State Park","state":"FL","qso":"13"},{"date":"5/15/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"18"},{"date":"5/14/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"16"},{"date":"5/13/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"18"},{"date":"5/11/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"13"},{"date":"5/9/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"21"},{"date":"5/8/2026","callsign":"K5KAZ","ref":"US-1916","name":"Skyway Fishing Pier State Park","state":"FL","qso":"12"},{"date":"5/8/2026","callsign":"K5KAZ","ref":"US-1898","name":"Little Manatee River State Park","state":"FL","qso":"12"},{"date":"5/7/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"21"},{"date":"5/4/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"25"},{"date":"5/2/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"15"},{"date":"4/30/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"18"},{"date":"4/28/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"13"},{"date":"4/24/2026","callsign":"K5KAZ","ref":"US-1893","name":"Lake Louisa State Park","state":"FL","qso":"13"},{"date":"4/23/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"11"},{"date":"4/17/2026","callsign":"WA4GDN","ref":"US-3614","name":"Crystal River Preserve State Park","state":"FL","qso":"12"},{"date":"4/17/2026","callsign":"WA4GDN","ref":"US-3615","name":"Dade Battlefield State Park","state":"FL","qso":"12"},{"date":"4/17/2026","callsign":"WA4GDN","ref":"US-1879","name":"Homosassa Springs Wildlife State Park","state":"FL","qso":"11"},{"date":"4/17/2026","callsign":"WA4GDN","ref":"US-1850","name":"Crystal River Archaeological State Park","state":"FL","qso":"12"},{"date":"4/17/2026","callsign":"WA4GDN","ref":"US-1848","name":"Colt Creek State Park","state":"FL","qso":"11"},{"date":"4/16/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"16"},{"date":"4/15/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"12"},{"date":"4/14/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":""},{"date":"4/13/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"11"},{"date":"4/10/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"13"},{"date":"4/9/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"47"},{"date":"4/8/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"21"},{"date":"4/3/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"23"},{"date":"3/30/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"12"},{"date":"3/29/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"13"},{"date":"3/28/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"11"},{"date":"3/25/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"15"},{"date":"3/23/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"18"},{"date":"3/19/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"15"},{"date":"3/15/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"15"},{"date":"3/13/2026","callsign":"K5KAZ","ref":"US-1927","name":"Wekiwa Springs State Park","state":"FL","qso":"23"},{"date":"3/7/2026","callsign":"K5KAZ","ref":"US-1880","name":"Honeymoon Island State Park","state":"FL","qso":"24"},{"date":"3/1/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"15"},{"date":"2/27/2026","callsign":"K5KAZ","ref":"US-1912","name":"Rainbow Springs State Park","state":"FL","qso":"13"},{"date":"1/17/2026","callsign":"K5KAZ","ref":"US-3621","name":"Fort Foster State Historic Site","state":"FL","qso":"22"},{"date":"1/17/2026","callsign":"K5KAZ","ref":"US-1878","name":"Hillsborough River State Park","state":"FL","qso":"22"},{"date":"1/16/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"13"},{"date":"1/12/2026","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"14"},{"date":"12/29/2025","callsign":"K5KAZ","ref":"US-6876","name":"Castle Island State Park","state":"MA","qso":"12"},{"date":"12/18/2025","callsign":"K5KAZ","ref":"US-1299","name":"First Landing State Park","state":"VA","qso":"14"},{"date":"12/3/2025","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"11"},{"date":"12/2/2025","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"11"},{"date":"12/1/2025","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":""},{"date":"11/28/2025","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"18"},{"date":"11/23/2025","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"17"},{"date":"11/21/2025","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"15"},{"date":"11/21/2025","callsign":"K5KAZ","ref":"US-1878","name":"Hillsborough River State Park","state":"FL","qso":"18"},{"date":"11/21/2025","callsign":"K5KAZ","ref":"US-3621","name":"Fort Foster State Historic Site","state":"FL","qso":"18"},{"date":"11/19/2025","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"21"},{"date":"11/17/2025","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"23"},{"date":"11/16/2025","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"15"},{"date":"11/14/2025","callsign":"K5KAZ","ref":"US-6296","name":"Chassahowitzka Wildlife Management Area","state":"FL","qso":"16"},{"date":"11/7/2025","callsign":"K5KAZ","ref":"US-1870","name":"Fort Cooper State Park","state":"FL","qso":"29"},{"date":"11/6/2025","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"23"},{"date":"11/5/2025","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"23"},{"date":"11/1/2025","callsign":"K5KAZ","ref":"US-7475","name":"Starkey Wilderness/Serenova Preserve State Conservation Area","state":"FL","qso":"49"},{"date":"10/24/2025","callsign":"K5KAZ","ref":"US-1916","name":"Skyway Fishing Pier State Park","state":"FL","qso":"17"},{"date":"10/22/2025","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"21"},{"date":"10/20/2025","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"19"},{"date":"10/10/2025","callsign":"K5KAZ","ref":"US-3615","name":"Dade Battlefield State Park","state":"FL","qso":"17"},{"date":"10/6/2025","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"18"},{"date":"10/4/2025","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"35"},{"date":"10/1/2025","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"14"},{"date":"9/29/2025","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"28"},{"date":"9/20/2025","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"13"},{"date":"9/19/2025","callsign":"K5KAZ","ref":"US-1848","name":"Colt Creek State Park","state":"FL","qso":"13"},{"date":"9/15/2025","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"22"},{"date":"9/11/2025","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"17"},{"date":"9/6/2025","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"63"},{"date":"9/1/2025","callsign":"K5KAZ","ref":"US-7475","name":"Starkey Wilderness/Serenova Preserve State Conservation Area","state":"FL","qso":"94"},{"date":"9/1/2025","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"12"},{"date":"8/28/2025","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"21"},{"date":"8/19/2025","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"19"},{"date":"8/15/2025","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"17"},{"date":"7/26/2025","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"10"},{"date":"7/5/2025","callsign":"K5KAZ","ref":"US-1928","name":"Werner-Boyce Salt Springs State Park","state":"FL","qso":"17"},{"date":"6/9/2025","callsign":"K5KAZ","ref":"US-2667","name":"Mount Washington State Park","state":"NH","qso":"5"},{"date":"6/7/2025","callsign":"K5KAZ","ref":"US-8414","name":"Middlesex Fells State Reserve","state":"MA","qso":"5"},{"date":"5/27/2025","callsign":"K5KAZ","ref":"US-0735","name":"Harpers Ferry National Historical Park","state":"WV","qso":"10"},{"date":"5/25/2025","callsign":"K5KAZ","ref":"US-0034","name":"Great Smoky Mountains National Park","state":"NC","qso":"14"},{"date":"4/5/2025","callsign":"K5KAZ","ref":"US-1879","name":"Homosassa Springs Wildlife State Park","state":"FL","qso":"18"},{"date":"2/1/2025","callsign":"K5KAZ","ref":"US-1880","name":"Honeymoon Island State Park","state":"FL","qso":"24"}];
-(function(){
-  const data = window.K5KAZ_CSV_ACTIVATIONS || [];
-  const body = document.getElementById('activation-table-body');
-  const search = document.getElementById('activation-search');
-  const sort = document.getElementById('activation-sort');
-  const count = document.getElementById('activation-count');
-  if (!body || !search || !sort || !count) return;
-  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const num = s => parseInt(String(s||'').replace(/[^0-9-]/g,''),10) || 0;
-  function render(){
-    const q = search.value.trim().toLowerCase();
-    let items = data.filter(a => (a.date+' '+a.ref+' '+a.name+' '+a.state).toLowerCase().includes(q));
-    switch(sort.value){
-      case 'oldest': items.sort((a,b)=>a.date.localeCompare(b.date)); break;
-      case 'qso-high': items.sort((a,b)=>num(b.qso)-num(a.qso)); break;
-      case 'qso-low': items.sort((a,b)=>num(a.qso)-num(b.qso)); break;
-      case 'park': items.sort((a,b)=>(a.name||a.ref).localeCompare(b.name||b.ref)); break;
-      default: items.sort((a,b)=>b.date.localeCompare(a.date));
-    }
-    body.innerHTML = items.map(a => {
-      const url = a.ref ? 'https://pota.app/#/park/' + encodeURIComponent(a.ref) : 'https://pota.app/';
-      const name = a.name ? `<a class="activation-link" href="${url}" target="_blank" rel="noopener noreferrer">${esc(a.name)}</a>` : '—';
-      return `<tr><td>${esc(a.date)||'—'}</td><td class="activation-ref">${esc(a.ref)||'—'}</td><td>${name}</td><td>${esc(a.state)||'—'}</td><td>${esc(a.qso)||'—'}</td></tr>`;
-    }).join('') || '<tr><td colspan="5">No activations match your search.</td></tr>';
-    count.textContent = items.length + (items.length === 1 ? ' activation' : ' activations');
-  }
-  search.addEventListener('input', render);
-  sort.addEventListener('change', render);
-  render();
-})();
-</script>
-
-</body>
-</html>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script><script src="app.js"></script>
+</body></html>
