@@ -1,129 +1,108 @@
 #!/usr/bin/env python3
-import json, os, sys, time
-from datetime import datetime, timezone
-from urllib.parse import quote
-from urllib.request import Request, urlopen
 
-CALL = os.environ.get('POTA_CALLSIGN', 'K5KAZ').upper()
-BASE = 'https://api.pota.app'
-OUT = 'data/pota.json'
-DELAY = 0.15
+import json, os, re, sys
+from datetime import datetime, timezone
+from urllib.request import Request, urlopen
+from urllib.parse import quote
+
+CALL = os.environ.get("POTA_CALLSIGN","K5KAZ")
+BASE = "https://api.pota.app"
+OUT = "data/pota.json"
 
 def get_json(url):
-    req = Request(url, headers={'User-Agent':'K5KAZ-POTA-Site/3.0','Accept':'application/json'})
-    with urlopen(req, timeout=30) as r:
-        return json.loads(r.read().decode('utf-8'))
+    req=Request(url,headers={"User-Agent":"K5KAZ-POTA-Site/1.0","Accept":"application/json"})
+    with urlopen(req,timeout=30) as r:
+        return json.load(r)
 
-def walk(x):
-    if isinstance(x, dict):
-        yield x
-        for v in x.values(): yield from walk(v)
-    elif isinstance(x, list):
-        for v in x: yield from walk(v)
+def num(v):
+    try: return int(float(v))
+    except: return None
 
-def num(x):
-    if isinstance(x, bool): return None
-    try:
-        n=float(x); return int(n) if n.is_integer() else n
-    except (TypeError,ValueError): return None
+def walk(obj):
+    if isinstance(obj, dict):
+        yield obj
+        for v in obj.values(): yield from walk(v)
+    elif isinstance(obj, list):
+        for v in obj: yield from walk(v)
 
 def first_num(obj, keys):
-    for d in walk(obj):
+    if isinstance(obj, dict):
         for k in keys:
-            if k in d:
-                n=num(d[k])
-                if n is not None: return n
+            if k in obj and num(obj[k]) is not None: return num(obj[k])
     return None
 
-def norm_date(v):
-    s=str(v).strip()
-    return f'{s[:4]}-{s[4:6]}-{s[6:]}' if len(s)==8 and s.isdigit() else s
-
-def get_stats(raw):
-    return {
-      'activations': first_num(raw,['activations','activationCount','totalActivations','activatorActivations']) or 0,
-      'parks': first_num(raw,['parks','parkCount','uniqueParks','uniqueParksActivated','activatorParks']) or 0,
-      'qsos': first_num(raw,['qsos','qsoCount','totalQsos','totalQSOs','activatorQsos']) or 0,
-      'states': first_num(raw,['states','stateCount','uniqueStates','statesActivated']) or 0,
-    }
-
-def park_refs(raw):
-    out=[]; seen=set()
-    for d in walk(raw):
+def find_activation_rows(obj):
+    candidates=[]
+    for d in walk(obj):
         if not isinstance(d,dict): continue
-        for k in ('reference','parkReference','park_ref','park','ref'):
-            v=d.get(k)
-            if v:
-                s=str(v).strip()
-                if '-' in s and len(s)>=4 and s not in seen:
-                    seen.add(s); out.append(s)
+        ref=d.get("reference") or d.get("parkReference") or d.get("park_ref") or d.get("ref")
+        date=d.get("date") or d.get("activationDate") or d.get("activation_date") or d.get("qso_date")
+        if ref and date:
+            candidates.append({
+                "reference":str(ref),
+                "name":d.get("parkName") or d.get("name") or d.get("locationName") or str(ref),
+                "date":str(date),
+                "qsos":first_num(d,["qsos","qsoCount","totalQsos","total","contacts","count"]) or 0
+            })
+    seen=set(); out=[]
+    for x in candidates:
+        key=(x["reference"],x["date"])
+        if key not in seen:
+            seen.add(key); out.append(x)
     return out
 
-def park_info(ref):
-    data=get_json(f'{BASE}/park/{quote(ref)}')
-    name=ref; lat=lon=None
-    for d in walk(data):
-        if not isinstance(d,dict): continue
-        name=d.get('name') or d.get('parkName') or name
-        if lat is None: lat=d.get('latitude') or d.get('lat')
-        if lon is None: lon=d.get('longitude') or d.get('lon') or d.get('lng')
-    try: lat=float(lat) if lat is not None else None; lon=float(lon) if lon is not None else None
-    except (TypeError,ValueError): lat=lon=None
-    return str(name),lat,lon
+def find_stat(obj, keys):
+    for d in walk(obj):
+        v=first_num(d,keys)
+        if v is not None: return v
+    return None
 
-def park_activations(ref):
-    data=get_json(f'{BASE}/park/activations/{quote(ref)}?count=all')
-    if isinstance(data,dict):
-        for k in ('activations','results','data'):
-            if isinstance(data.get(k),list): return data[k]
-        return []
-    return data if isinstance(data,list) else []
+try:
+    raw=get_json(f"{BASE}/stats/user/{quote(CALL)}")
+except Exception as e:
+    print("POTA stats fetch failed:",e,file=sys.stderr)
+    sys.exit(1)
 
-def main():
-    raw=get_json(f'{BASE}/stats/user/{quote(CALL)}')
-    st=get_stats(raw)
-    refs=park_refs(raw)
-    print(f'Stats: {json.dumps(st)}')
-    print(f'Park references found: {len(refs)}')
-    if not refs:
-        print('No park references found in user stats.',file=sys.stderr); sys.exit(2)
+stats={
+    "activations":find_stat(raw,["activations","activationCount","totalActivations","activatorActivations"]),
+    "parks":find_stat(raw,["parks","parkCount","uniqueParks","uniqueParksActivated","activatorParks"]),
+    "qsos":find_stat(raw,["qsos","qsoCount","totalQsos","totalQSOs","activatorQsos"]),
+    "states":find_stat(raw,["states","stateCount","uniqueStates"]),
+}
+rows=find_activation_rows(raw)
 
-    rows=[]; parks=[]; seen_rows=set(); seen_parks=set()
-    for i,ref in enumerate(refs,1):
-        print(f'Checking {i}/{len(refs)}: {ref}')
-        try:
-            name,lat,lon=park_info(ref); time.sleep(DELAY)
-            records=park_activations(ref); found=0
-            for r in records:
-                if not isinstance(r,dict): continue
-                active=str(r.get('activeCallsign') or r.get('activator') or r.get('callsign') or '').upper().strip()
-                if active != CALL: continue
-                qdate=r.get('qso_date') or r.get('date') or r.get('activationDate')
-                if not qdate: continue
-                total=num(r.get('totalQSOs'))
-                if total is None:
-                    total=(num(r.get('qsosCW')) or 0)+(num(r.get('qsosDATA')) or 0)+(num(r.get('qsosPHONE')) or 0)
-                row={'reference':ref,'name':name,'date':norm_date(qdate),'qsos':int(total or 0)}
-                key=(row['reference'],row['date'])
-                if key not in seen_rows:
-                    seen_rows.add(key); rows.append(row); found+=1
-            if lat is not None and lon is not None and ref not in seen_parks:
-                parks.append({'reference':ref,'name':name,'lat':lat,'lon':lon}); seen_parks.add(ref)
-            print(f'  Found {found} K5KAZ activation(s)')
-        except Exception as e:
-            print(f'  Skipped {ref}: {e}',file=sys.stderr)
-        time.sleep(DELAY)
+# Try to enrich any park references found in the public stats response.
+parks=[]
+seen=set()
+for row in rows:
+    ref=row["reference"]
+    if ref in seen: continue
+    seen.add(ref)
+    try:
+        p=get_json(f"{BASE}/park/{quote(ref)}")
+        lat=lon=None
+        name=row["name"]
+        for d in walk(p):
+            if not isinstance(d,dict): continue
+            if lat is None:
+                lat=d.get("latitude") or d.get("lat")
+                lon=d.get("longitude") or d.get("lon") or d.get("lng")
+            name=d.get("name") or d.get("parkName") or name
+        if lat is not None and lon is not None:
+            parks.append({"reference":ref,"name":name,"lat":float(lat),"lon":float(lon)})
+    except Exception as e:
+        print("Park enrichment skipped",ref,e,file=sys.stderr)
 
-    rows.sort(key=lambda x:x['date'],reverse=True)
-    if not rows:
-        print('No K5KAZ activation records found.',file=sys.stderr); sys.exit(3)
-
-    payload={'callsign':CALL,'updatedAt':datetime.now(timezone.utc).isoformat(),'stats':st,'activationsList':rows,'parks':parks,'source':'POTA public API','status':'ok'}
-    os.makedirs('data',exist_ok=True)
-    with open(OUT,'w',encoding='utf-8') as f: json.dump(payload,f,indent=2)
-    print(f'Wrote {OUT}')
-    print(f'Activation records: {len(rows)}')
-    print(f'Park locations: {len(parks)}')
-
-if __name__=='__main__': main()
-
+payload={
+    "callsign":CALL,
+    "updatedAt":datetime.now(timezone.utc).isoformat(),
+    "stats":stats,
+    "activationsList":sorted(rows,key=lambda x:x["date"],reverse=True)[:100],
+    "parks":parks,
+    "source":"POTA public API",
+    "status":"ok"
+}
+os.makedirs(os.path.dirname(OUT),exist_ok=True)
+with open(OUT,"w",encoding="utf-8") as f: json.dump(payload,f,indent=2)
+print("Wrote",OUT)
+print(json.dumps(stats,indent=2))
