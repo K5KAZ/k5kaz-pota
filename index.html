@@ -3,142 +3,97 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="K5KAZ — Chuck Miller's amateur radio station, portable equipment, and Parks on the Air activities.">
-  <title>K5KAZ | Amateur Radio & POTA</title>
+  <title>K5KAZ | Parks. Radio. Adventure.</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header class="site-header">
-    <div class="header-inner">
-      <a class="brand" href="#top" aria-label="K5KAZ home">
-        <img src="images/k5kaz-logo.png" alt="Chuck Miller K5KAZ POTA logo">
-      </a>
-      <div class="brand-text">
+  <main class="site-shell">
+
+    <header class="hero" id="home">
+      <div class="hero-overlay"></div>
+      <div class="hero-inner">
+        <img class="logo" src="assets/logo.png" alt="K5KAZ POTA logo">
+        <div class="hero-brand">
+          <div class="eyebrow">AMATEUR RADIO</div>
+          <h1>K5KAZ</h1>
+          <div class="tagline">Parks. Radio. Adventure.</div>
+          <div class="rule"></div>
+          <div class="subline">ON THE AIR FROM FLORIDA AND BEYOND</div>
+        </div>
+
+        <nav class="nav" aria-label="Main navigation">
+          <a class="active" href="#home">Home</a>
+          <a href="#bio">Bio</a>
+          <a href="#station">Station</a>
+          <a href="#portable">Portable</a>
+          <a href="#mobile">Mobile</a>
+          <a href="#photos">Photos</a>
+        </nav>
+      </div>
+    </header>
+
+    <section class="panel bio-panel" id="bio">
+      <div class="panel-copy">
+        <h2><span class="icon">●</span> ABOUT ME</h2>
+        <p>Originally from Boston, MA, I moved to Hudson, Florida in 2013 after retiring from Verizon Communications, formerly New England Telephone, following 36 years of service.</p>
+        <p>I got my Amateur Radio Technician license in April 2022 and upgraded to General in September 2022. In September 2026, I upgraded to Amateur Extra.</p>
+        <p>I joined the Gulf Coast Amateur Radio Club (GCARC) in June 2022.</p>
+        <p>Amateur radio has become a great way for me to combine radio, technology, and the outdoors — especially through Parks on the Air (POTA).</p>
+        <p class="qrz"><a href="https://www.qrz.com/db/K5KAZ" target="_blank" rel="noopener">View my QRZ page →</a></p>
+      </div>
+      <img src="assets/about.jpg" alt="Radio Parks Friends Adventure sign beside a Florida lake">
+    </section>
+
+    <section class="panel station-panel" id="station">
+      <div class="panel-copy">
+        <h2><span class="icon">⌁</span> MY STATION</h2>
+        <ul>
+          <li>Yaesu FT-710 AES (HF)</li>
+          <li>ICOM IC-2730 (VHF/UHF)</li>
+        </ul>
+        <p>My home station is set up for HF and VHF/UHF operations. It gives me the flexibility to enjoy DX, local nets, and stay connected with the amateur radio community.</p>
+      </div>
+      <img src="assets/station.jpg" alt="K5KAZ amateur radio station">
+    </section>
+
+    <div class="equipment-grid">
+      <section class="panel equipment-panel" id="mobile">
+        <div class="panel-copy">
+          <h2><span class="icon">◆</span> MOBILE EQUIPMENT</h2>
+          <ul>
+            <li>Yaesu FTX1 Optima</li>
+            <li>ATAS 120A antenna</li>
+          </ul>
+          <p>My mobile setup lets me stay on the air while on the road, whether it’s a quick local contact or a longer trip.</p>
+        </div>
+        <img src="assets/mobile.jpg" alt="Mobile amateur radio setup outdoors">
+      </section>
+
+      <section class="panel equipment-panel" id="portable">
+        <div class="panel-copy">
+          <h2><span class="icon">♟</span> PORTABLE EQUIPMENT</h2>
+          <ul>
+            <li>Yaesu FT-891</li>
+            <li>EFHW Spooltenna</li>
+            <li>BuddiStick Pro</li>
+            <li>17 ft Telescopic whip</li>
+          </ul>
+          <p>My portable gear is lightweight, versatile, and ready for Parks on the Air (POTA) activations and other outdoor adventures.</p>
+        </div>
+        <img src="assets/portable.jpg" alt="Yaesu FT-891 portable radio">
+      </section>
+    </div>
+
+    <footer id="photos">
+      <div>
         <strong>K5KAZ</strong>
-        <span>Amateur Radio • POTA</span>
+        <span>PARKS ON THE AIR</span>
+        <span>AMATEUR RADIO</span>
+        <span>FLORIDA</span>
       </div>
-      <nav aria-label="Main navigation">
-        <a href="#bio">Bio</a>
-        <a href="#station">Station</a>
-        <a href="#portable">Portable</a>
-        <a href="#mobile">Mobile</a>
-      </nav>
-    </div>
-  </header>
+      <div class="footer-tag">Same Radio. A Bigger View.</div>
+    </footer>
 
-  <main id="top">
-    <section id="bio" class="section intro-section">
-      <div class="wrap intro-grid">
-        <div class="intro-copy">
-          <p class="kicker">K5KAZ • AMATEUR RADIO</p>
-          <h1>Radio, the outdoors,<br><em>and the next adventure.</em></h1>
-          <p class="lead">Welcome to my corner of the airwaves. This site is about my ham radio journey, my station, and the equipment I take into the field for Parks on the Air activations.</p>
-          <div class="bio-rule"></div>
-          <h2>My Ham Radio Journey</h2>
-          <p>Originally from Boston, Massachusetts, I moved to Hudson, Florida in 2013.</p>
-          <p>I retired from Verizon Communications, formerly New England Telephone, after 36 years.</p>
-          <p>I earned my Ham Radio Technician license in April 2022, upgraded to General in September 2022, and upgraded to Amateur Extra in September 2026.</p>
-          <p>I joined the Gulf Coast Amateur Radio Club (GCARC) in June 2022.</p>
-          <a class="qrz-link" href="https://www.qrz.com/db/K5KAZ" target="_blank" rel="noopener">View my K5KAZ page on QRZ →</a>
-        </div>
-        <aside class="timeline" aria-label="License timeline">
-          <div class="timeline-title">THE JOURNEY</div>
-          <div class="timeline-item"><span>APR 2022</span><strong>Technician</strong></div>
-          <div class="timeline-item"><span>SEP 2022</span><strong>General</strong></div>
-          <div class="timeline-item"><span>JUN 2022</span><strong>Joined GCARC</strong></div>
-          <div class="timeline-item"><span>SEP 2026</span><strong>Amateur Extra</strong></div>
-        </aside>
-      </div>
-    </section>
-
-    <section id="station" class="section section-forest">
-      <div class="wrap">
-        <div class="section-head">
-          <div>
-            <p class="kicker">01 / HOME STATION</p>
-            <h2>My Station</h2>
-          </div>
-          <p>Where the home shack handles HF and VHF/UHF operation.</p>
-        </div>
-        <div class="station-grid">
-          <figure class="photo-card station-photo">
-            <img src="images/station.jpg" alt="K5KAZ home amateur radio station">
-            <figcaption>Home station • K5KAZ</figcaption>
-          </figure>
-          <div class="spec-stack">
-            <article class="spec-card">
-              <span class="badge">HF</span>
-              <h3>Yaesu FT-710 AES</h3>
-              <p>My primary HF transceiver for operating from the home station.</p>
-            </article>
-            <article class="spec-card">
-              <span class="badge">VHF / UHF</span>
-              <h3>ICOM IC-2730</h3>
-              <p>My VHF/UHF radio for local amateur radio communications.</p>
-            </article>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="portable" class="section">
-      <div class="wrap">
-        <div class="section-head">
-          <div>
-            <p class="kicker">02 / FIELD GEAR</p>
-            <h2>Portable Equipment</h2>
-          </div>
-          <p>POTA is where the radio leaves the shack and heads outside.</p>
-        </div>
-        <div class="portable-grid">
-          <figure class="photo-card portable-photo">
-            <img src="images/ft-891.jpg" alt="Yaesu FT-891 portable amateur radio">
-            <figcaption>Yaesu FT-891 • portable HF</figcaption>
-          </figure>
-          <div class="portable-copy">
-            <span class="badge">PORTABLE HF</span>
-            <h3>Yaesu FT-891</h3>
-            <p>The FT-891 is one of my go-to radios for portable operation and POTA activations.</p>
-            <div class="gear-list">
-              <div><span>ANTENNA</span><strong>EFHW Spooltenna</strong></div>
-              <div><span>ANTENNA</span><strong>BuddiStick Pro</strong></div>
-              <div><span>ANTENNA</span><strong>17 ft Telescopic Whip</strong></div>
-            </div>
-          </div>
-        </div>
-        <div class="field-note">
-          <strong>Pack light. Get outside. Make contacts.</strong>
-          <span>Portable equipment for getting on the air from parks and other outdoor locations.</span>
-        </div>
-      </div>
-    </section>
-
-    <section id="mobile" class="section section-sand">
-      <div class="wrap">
-        <div class="section-head">
-          <div>
-            <p class="kicker">03 / ON THE ROAD</p>
-            <h2>Mobile Equipment</h2>
-          </div>
-          <p>A compact setup for staying on the air while traveling.</p>
-        </div>
-        <div class="mobile-card">
-          <div class="mobile-icon">📻</div>
-          <div>
-            <span class="badge">MOBILE</span>
-            <h3>Yaesu FTX1 Optima</h3>
-            <p>Paired with an <strong>ATAS-120A</strong> antenna for mobile operation.</p>
-          </div>
-        </div>
-      </div>
-    </section>
   </main>
-
-  <footer class="footer">
-    <div class="wrap footer-inner">
-      <div><strong>K5KAZ</strong> • Chuck Miller</div>
-      <div>73 — Hope to hear you on the air.</div>
-    </div>
-  </footer>
 </body>
 </html>
