@@ -301,6 +301,21 @@ body {
   min-height: 0;
 }
 
+.equipment-grid .panel.equipment-image-only {
+  display: block;
+  overflow: hidden;
+  align-self: start;
+}
+
+.equipment-grid .panel.equipment-image-only img {
+  display: block;
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  object-fit: contain;
+  object-position: center;
+}
+
 .equipment-grid .panel-copy {
   min-height: 300px;
   padding: 25px 26px 18px;
@@ -309,6 +324,10 @@ body {
 .equipment-grid .panel img {
   min-height: 220px;
   height: 220px;
+}
+
+.equipment-grid .panel.equipment-image-only img {
+  height: auto;
 }
 
 #mobile img { object-position: center; }
@@ -413,6 +432,13 @@ footer span {
   }
   .equipment-grid .panel {
     grid-template-rows: auto 210px;
+  }
+  .equipment-grid .panel.equipment-image-only {
+    min-height: 0;
+  }
+  .equipment-grid .panel.equipment-image-only img {
+    height: auto;
+    min-height: 0;
   }
   footer {
     padding: 25px 25px;
