@@ -188,6 +188,22 @@ for key in ('activations', 'parks', 'qsos'):
 
 parks = add_coordinates(activated)
 
+# Fetch the current top five leaderboard entries for Werner-Boyce Salt Springs
+# State Park (US-1928) directly from the POTA public API.
+leaderboard = {}
+try:
+    raw_leaderboard = get(f'{BASE}/park/leaderboard/US-1928?count=5')
+    lb = raw_leaderboard.get('leaderboard', {}) if isinstance(raw_leaderboard, dict) else {}
+    for key in ('activations', 'activator_qsos'):
+        rows = lb.get(key, []) if isinstance(lb, dict) else []
+        leaderboard[key] = [
+            {'callsign': str(row.get('callsign', '')).strip().upper(), 'count': int(row.get('count', 0))}
+            for row in rows if isinstance(row, dict) and row.get('callsign')
+        ][:5]
+except Exception as exc:
+    print(f'US-1928 leaderboard unavailable: {exc}', file=sys.stderr)
+    leaderboard = {'activations': [], 'activator_qsos': []}
+
 if not activated:
     raise RuntimeError('The Activator Parks CSV contained no park rows.')
 
@@ -198,6 +214,11 @@ with open(OUT, 'w', encoding='utf-8') as handle:
         'updatedAt': datetime.now(timezone.utc).isoformat(),
         'stats': stats,
         'parks': parks,
+        'parkLeaders': {
+            'reference': 'US-1928',
+            'name': 'Werner-Boyce Salt Springs State Park',
+            **leaderboard,
+        },
         'source': 'POTA public API + POTA Activator Parks export',
         'status': 'ok',
     }, handle, indent=2)
