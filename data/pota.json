@@ -1,14 +1,14 @@
 {
   "callsign": "K5KAZ",
-  "updatedAt": "2026-09-17T15:20:36.391474+00:00",
+  "updatedAt": null,
   "stats": {
-    "activations": 133,
-    "parks": 45,
-    "qsos": 2449,
-    "states": 0
+    "activations": null,
+    "parks": null,
+    "qsos": null,
+    "states": null
   },
   "activationsList": [],
   "parks": [],
   "source": "POTA public API",
-  "status": "ok"
+  "status": "pending"
 }

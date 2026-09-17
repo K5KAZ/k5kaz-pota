@@ -1,15 +1,13 @@
-K5KAZ Site v3
+K5KAZ POTA website
 
-This version fixes the duplicate header problem.
+POTA data is updated by GitHub Actions.
 
-The approved screenshot's header is used as a single background image.
-There is NO second logo, title, tagline, or navigation layered over it.
+The live aggregate statistics (activations, parks, QSOs) come from the POTA public API.
+The States count and the My POTA Parks map use data from data/activator_parks.csv,
+which is the current POTA My Stats -> Activator Parks -> Export CSV file.
 
-GitHub:
-1. Replace index.html.
-2. Replace styles.css.
-3. Upload/replace assets/hero-approved.jpg.
-4. Commit.
-5. Refresh GitHub Pages.
+If your POTA park list changes, replace data/activator_parks.csv with a fresh export
+from POTA and commit it to GitHub. Then run the "Update K5KAZ POTA data" workflow.
 
-Do not change any other files yet.
+The updater gets park coordinates from the official POTA API, so coordinates are not
+stored manually in the website.
