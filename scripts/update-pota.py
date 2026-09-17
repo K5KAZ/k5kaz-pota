@@ -188,9 +188,12 @@ for key in ('activations', 'parks', 'qsos'):
 
 parks = add_coordinates(activated)
 
-# Fetch the current top five leaderboard entries for Werner-Boyce Salt Springs
-# State Park (US-1928) directly from the POTA public API.
-leaderboard = {}
+# Build the top-five leaderboards for Werner-Boyce Salt Springs State Park
+# (US-1928).  Try POTA's dedicated leaderboard endpoint first.  If that
+# endpoint is unavailable, fall back to the park activation history and
+# calculate the same two rankings locally.  This keeps the website resilient
+# to temporary changes/outages in the leaderboard endpoint.
+leaderboard = {'activations': [], 'activator_qsos': []}
 try:
     raw_leaderboard = get(f'{BASE}/park/leaderboard/US-1928?count=5')
     lb = raw_leaderboard.get('leaderboard', {}) if isinstance(raw_leaderboard, dict) else {}
@@ -200,9 +203,39 @@ try:
             {'callsign': str(row.get('callsign', '')).strip().upper(), 'count': int(row.get('count', 0))}
             for row in rows if isinstance(row, dict) and row.get('callsign')
         ][:5]
+
+    if not leaderboard['activations'] or not leaderboard['activator_qsos']:
+        raise RuntimeError('POTA leaderboard endpoint returned incomplete data')
 except Exception as exc:
-    print(f'US-1928 leaderboard unavailable: {exc}', file=sys.stderr)
-    leaderboard = {'activations': [], 'activator_qsos': []}
+    print(f'US-1928 leaderboard endpoint unavailable; using activation history: {exc}', file=sys.stderr)
+    try:
+        raw_history = get(f'{BASE}/park/activations/US-1928?count=all')
+        history = raw_history.get('activations', []) if isinstance(raw_history, dict) else []
+        activation_counts = {}
+        qso_counts = {}
+        for row in history:
+            if not isinstance(row, dict):
+                continue
+            call = str(row.get('activeCallsign') or row.get('callsign') or '').strip().upper()
+            if not call:
+                continue
+            activation_counts[call] = activation_counts.get(call, 0) + 1
+            try:
+                qsos = int(row.get('totalQSOs') or 0)
+            except (TypeError, ValueError):
+                qsos = 0
+            qso_counts[call] = qso_counts.get(call, 0) + qsos
+
+        leaderboard['activations'] = [
+            {'callsign': call, 'count': count}
+            for call, count in sorted(activation_counts.items(), key=lambda x: (-x[1], x[0]))[:5]
+        ]
+        leaderboard['activator_qsos'] = [
+            {'callsign': call, 'count': count}
+            for call, count in sorted(qso_counts.items(), key=lambda x: (-x[1], x[0]))[:5]
+        ]
+    except Exception as history_exc:
+        print(f'US-1928 activation history unavailable: {history_exc}', file=sys.stderr)
 
 if not activated:
     raise RuntimeError('The Activator Parks CSV contained no park rows.')
