@@ -188,7 +188,7 @@ body {
 
 .pota-gallery {
   display: grid;
-  grid-template-columns: 1.25fr .75fr;
+  grid-template-columns: 1.1fr 1fr 1fr;
   gap: 12px;
   padding: 12px;
 }
@@ -199,6 +199,7 @@ body {
   border: 1px solid rgba(126, 164, 151, .22);
   border-radius: 7px;
   background: rgba(0,0,0,.2);
+  min-height: 390px;
 }
 
 .pota-photo img {
@@ -210,7 +211,14 @@ body {
 }
 
 .pota-photo-main img {
-  height: 400px;
+  height: 360px;
+  object-fit: cover;
+}
+
+.pota-award img {
+  height: 360px;
+  padding: 12px;
+  background: transparent;
 }
 
 .pota-photo figcaption {
@@ -218,6 +226,56 @@ body {
   color: #d9ddd6;
   font-size: 12px;
   letter-spacing: .03em;
+}
+
+.pota-journey {
+  display: flex;
+  align-items: stretch;
+}
+
+.pota-journey-copy {
+  width: 100%;
+  padding: 28px 26px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.pota-journey h3 {
+  margin: 0 0 20px;
+  color: var(--cream);
+  font-family: "Barlow Condensed", Impact, sans-serif;
+  font-size: 32px;
+  letter-spacing: .02em;
+  line-height: 1;
+  border-bottom: 3px solid var(--orange);
+  width: fit-content;
+  padding-bottom: 7px;
+}
+
+.pota-journey p {
+  margin: 0 0 18px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.62;
+}
+
+.pota-profile-button {
+  display: inline-block;
+  align-self: flex-start;
+  margin-top: 6px;
+  padding: 12px 18px;
+  border: 2px solid var(--orange);
+  border-radius: 9px;
+  color: var(--orange-soft);
+  font-weight: 700;
+  text-decoration: none;
+  transition: background .2s ease, color .2s ease;
+}
+
+.pota-profile-button:hover {
+  background: var(--orange);
+  color: #111;
 }
 
 .station-panel {
@@ -343,7 +401,11 @@ footer span {
   .pota-copy h2 { font-size: 32px; }
   .pota-badge { min-height: 220px; }
   .pota-gallery { padding: 10px; }
+  .pota-photo { min-height: 0; }
   .pota-photo img, .pota-photo-main img { height: 320px; }
+  .pota-award img { height: 320px; }
+  .pota-journey-copy { padding: 24px 22px; }
+  .pota-journey h3 { font-size: 32px; }
   .panel img { min-height: 210px; }
   .equipment-grid {
     margin-left: 10px;
