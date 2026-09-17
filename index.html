@@ -1,67 +1,144 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="K5KAZ Parks on the Air — portable amateur radio adventures.">
-<title>K5KAZ | Parks on the Air</title>
-<link rel="stylesheet" href="styles.css">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
-<style>
-.activation-tools{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
-.activation-tools input,.activation-tools select{background:#0d191d;color:#c8d2cf;border:1px solid #294045;padding:10px 12px;border-radius:3px;font:inherit}
-.activation-tools input{flex:1;min-width:220px}.activation-count{margin-left:auto;color:#8c9b97;font-size:.85rem}
-.activation-table-wrap{overflow-x:auto}.activation-table{width:100%;border-collapse:collapse;min-width:620px}
-.activation-table th,.activation-table td{padding:12px 10px;border-bottom:1px solid #26383c;text-align:left}
-.activation-table th{color:#9fb0ab;font-size:.75rem;letter-spacing:.08em;text-transform:uppercase}
-.activation-table td{color:#d8e0dd}.activation-table tr:hover{background:rgba(255,255,255,.025)}
-.activation-table .qso-cell{text-align:right;white-space:nowrap}.activation-table .date-cell{white-space:nowrap}
-.activation-empty{padding:24px!important;color:#9fb0ab}
-@media(max-width:700px){.activation-tools input{min-width:100%}.activation-count{margin-left:0}}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="K5KAZ — Chuck Miller's amateur radio station, portable equipment, and Parks on the Air activities.">
+  <title>K5KAZ | Amateur Radio & POTA</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<header class="site-header"><div class="wrap nav">
-<a class="brand" href="#home"><strong>K5KAZ</strong><span>PARKS ON THE AIR</span><small>PORTABLE AMATEUR RADIO</small></a>
-<nav><a href="#home">Home</a><a href="#activations">Activations</a><a href="#parks">My Parks</a><a href="#gear">Station &amp; Gear</a><a href="#photos">Photos</a><a href="#about">About K5KAZ</a></nav>
-</div></header>
-<main id="home">
-<section class="hero"><div class="hero-shade"></div><div class="wrap hero-inner"><div>
-<p class="eyebrow">PARKS ON THE AIR • K5KAZ</p><h1>Radio.<br><em>Parks.</em><br>Adventure.</h1>
-<p class="lead">Portable amateur radio from parks and public lands. Follow my activations, explore the parks I've worked, and see the station that goes into the field.</p>
-<a class="btn" href="#activations">Explore my activations <b>→</b></a>
-</div></div></section>
-<section class="stats">
-<div><b id="activations-stat">—</b><span>POTA ACTIVATIONS</span></div><div><b id="parks-stat">—</b><span>PARKS ACTIVATED</span></div>
-<div><b id="qsos-stat">—</b><span>TOTAL QSOs</span></div><div><b id="states-stat">—</b><span>STATES</span></div>
-</section>
-<section class="section wrap" id="activations">
-<div class="heading"><div><p class="eyebrow">FIELD LOG</p><h2>POTA Activations</h2></div><a href="#parks">View my parks →</a></div>
-<a class="btn" href="https://pota.app/#/profile/K5KAZ" target="_blank" rel="noopener noreferrer">View My POTA Profile <b>→</b></a>
-<div class="panel">
-<div class="panel-title"><h3>Activation History</h3><span class="live">AUTO-UPDATED</span></div>
-<div class="activation-tools">
-<input id="activation-search" type="search" placeholder="Search park reference or park name…">
-<select id="activation-sort" aria-label="Sort activations">
-<option value="date-desc">Newest first</option><option value="date-asc">Oldest first</option>
-<option value="qso-desc">Most QSOs</option><option value="qso-asc">Fewest QSOs</option><option value="park-asc">Park A–Z</option>
-</select><span id="activation-count" class="activation-count"></span>
-</div>
-<div class="activation-table-wrap"><table class="activation-table">
-<thead><tr><th>Date</th><th>Park</th><th>Name</th><th>QSOs</th></tr></thead>
-<tbody id="activation-table-body"><tr><td colspan="4" class="activation-empty">Waiting for the first POTA data sync…</td></tr></tbody>
-</table></div></div>
-<div class="grid2" style="margin-top:24px">
-<div class="panel"><div class="panel-title"><h3>Recent Activations</h3><span class="live">LIVE DATA</span></div><div id="activation-list"><div class="notice">Loading recent activations…</div></div></div>
-<div class="panel" id="parks"><div class="panel-title"><h3>My POTA Parks</h3><span class="live">AUTO-UPDATED</span></div>
-<div id="map"></div><p class="fine">Park markers are populated from the POTA data cache. Use official park information for navigation; POTA notes that its map locations are approximate. <a href="https://pota.app/">Open POTA →</a></p></div>
-</div></section>
-<section class="feature-band"><div class="wrap cards">
-<article id="gear"><div class="card-photo gear"></div><div class="card-body"><span>⌁</span><h3>Station &amp; Gear</h3><p>Radios, antennas, batteries, logging and the equipment I carry into the field.</p><a href="#gear">Explore the gear →</a></div></article>
-<article id="photos"><div class="card-photo photos"></div><div class="card-body"><span>▣</span><h3>Photos</h3><p>Activation setups, parks, antennas, radios and the outdoors.</p><a href="#photos">View the gallery →</a></div></article>
-<article id="about"><div class="card-photo about"></div><div class="card-body"><span>●</span><h3>About K5KAZ</h3><p>The story behind the callsign, portable operating and my POTA adventures.</p><a href="#about">Learn more →</a></div></article>
-</div></section>
-<section class="section wrap"><div class="callout"><div><p class="eyebrow">PARKS ON THE AIR</p><h2>Same radios. New horizons.</h2><p>Every activation is a chance to get outside, make contacts, and enjoy the hobby from somewhere new.</p></div><div class="signature">73 de<br><strong>K5KAZ</strong></div></div></section>
-</main>
-<footer><div class="wrap footer"><span><strong>K5KAZ</strong> &nbsp;|&nbsp; Parks on the Air &nbsp;|&nbsp; Portable Amateur Radio</span><span>73 and hope to hear you on the air.</span></div></footer>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script><script src="app.js"></script>
-</body></html>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="#top" aria-label="K5KAZ home">
+        <img src="images/k5kaz-logo.png" alt="Chuck Miller K5KAZ POTA logo">
+      </a>
+      <div class="brand-text">
+        <strong>K5KAZ</strong>
+        <span>Amateur Radio • POTA</span>
+      </div>
+      <nav aria-label="Main navigation">
+        <a href="#bio">Bio</a>
+        <a href="#station">Station</a>
+        <a href="#portable">Portable</a>
+        <a href="#mobile">Mobile</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section id="bio" class="section intro-section">
+      <div class="wrap intro-grid">
+        <div class="intro-copy">
+          <p class="kicker">K5KAZ • AMATEUR RADIO</p>
+          <h1>Radio, the outdoors,<br><em>and the next adventure.</em></h1>
+          <p class="lead">Welcome to my corner of the airwaves. This site is about my ham radio journey, my station, and the equipment I take into the field for Parks on the Air activations.</p>
+          <div class="bio-rule"></div>
+          <h2>My Ham Radio Journey</h2>
+          <p>Originally from Boston, Massachusetts, I moved to Hudson, Florida in 2013.</p>
+          <p>I retired from Verizon Communications, formerly New England Telephone, after 36 years.</p>
+          <p>I earned my Ham Radio Technician license in April 2022, upgraded to General in September 2022, and upgraded to Amateur Extra in September 2026.</p>
+          <p>I joined the Gulf Coast Amateur Radio Club (GCARC) in June 2022.</p>
+          <a class="qrz-link" href="https://www.qrz.com/db/K5KAZ" target="_blank" rel="noopener">View my K5KAZ page on QRZ →</a>
+        </div>
+        <aside class="timeline" aria-label="License timeline">
+          <div class="timeline-title">THE JOURNEY</div>
+          <div class="timeline-item"><span>APR 2022</span><strong>Technician</strong></div>
+          <div class="timeline-item"><span>SEP 2022</span><strong>General</strong></div>
+          <div class="timeline-item"><span>JUN 2022</span><strong>Joined GCARC</strong></div>
+          <div class="timeline-item"><span>SEP 2026</span><strong>Amateur Extra</strong></div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="station" class="section section-forest">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <p class="kicker">01 / HOME STATION</p>
+            <h2>My Station</h2>
+          </div>
+          <p>Where the home shack handles HF and VHF/UHF operation.</p>
+        </div>
+        <div class="station-grid">
+          <figure class="photo-card station-photo">
+            <img src="images/station.jpg" alt="K5KAZ home amateur radio station">
+            <figcaption>Home station • K5KAZ</figcaption>
+          </figure>
+          <div class="spec-stack">
+            <article class="spec-card">
+              <span class="badge">HF</span>
+              <h3>Yaesu FT-710 AES</h3>
+              <p>My primary HF transceiver for operating from the home station.</p>
+            </article>
+            <article class="spec-card">
+              <span class="badge">VHF / UHF</span>
+              <h3>ICOM IC-2730</h3>
+              <p>My VHF/UHF radio for local amateur radio communications.</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="portable" class="section">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <p class="kicker">02 / FIELD GEAR</p>
+            <h2>Portable Equipment</h2>
+          </div>
+          <p>POTA is where the radio leaves the shack and heads outside.</p>
+        </div>
+        <div class="portable-grid">
+          <figure class="photo-card portable-photo">
+            <img src="images/ft-891.jpg" alt="Yaesu FT-891 portable amateur radio">
+            <figcaption>Yaesu FT-891 • portable HF</figcaption>
+          </figure>
+          <div class="portable-copy">
+            <span class="badge">PORTABLE HF</span>
+            <h3>Yaesu FT-891</h3>
+            <p>The FT-891 is one of my go-to radios for portable operation and POTA activations.</p>
+            <div class="gear-list">
+              <div><span>ANTENNA</span><strong>EFHW Spooltenna</strong></div>
+              <div><span>ANTENNA</span><strong>BuddiStick Pro</strong></div>
+              <div><span>ANTENNA</span><strong>17 ft Telescopic Whip</strong></div>
+            </div>
+          </div>
+        </div>
+        <div class="field-note">
+          <strong>Pack light. Get outside. Make contacts.</strong>
+          <span>Portable equipment for getting on the air from parks and other outdoor locations.</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="mobile" class="section section-sand">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <p class="kicker">03 / ON THE ROAD</p>
+            <h2>Mobile Equipment</h2>
+          </div>
+          <p>A compact setup for staying on the air while traveling.</p>
+        </div>
+        <div class="mobile-card">
+          <div class="mobile-icon">📻</div>
+          <div>
+            <span class="badge">MOBILE</span>
+            <h3>Yaesu FTX1 Optima</h3>
+            <p>Paired with an <strong>ATAS-120A</strong> antenna for mobile operation.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <div><strong>K5KAZ</strong> • Chuck Miller</div>
+      <div>73 — Hope to hear you on the air.</div>
+    </div>
+  </footer>
+</body>
+</html>
