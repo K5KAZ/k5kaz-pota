@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>K5KAZ | Parks. Radio. Adventure.</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
 </head>
 <body>
   <main class="site-shell">
@@ -98,6 +99,31 @@
     </section>
 
 
+    <section class="pota-live" id="pota-live">
+      <div class="pota-live-heading">
+        <div>
+          <h2><span class="section-dot"></span> CURRENT POTA ACTIVITY</h2>
+          <p class="pota-live-intro">Current activity from my POTA profile, updated automatically from the POTA public API.</p>
+        </div>
+        <a class="pota-text-link" href="https://pota.app/#/profile/K5KAZ" target="_blank" rel="noopener">Open my POTA profile →</a>
+      </div>
+      <div class="pota-stats-grid" aria-live="polite">
+        <div class="pota-stat-card"><div class="pota-stat-icon">📻</div><div><div class="pota-stat-value" id="pota-activations">—</div><div class="pota-stat-label">POTA ACTIVATIONS</div></div></div>
+        <div class="pota-stat-card"><div class="pota-stat-icon">🌲</div><div><div class="pota-stat-value" id="pota-parks">—</div><div class="pota-stat-label">PARKS ACTIVATED</div></div></div>
+        <div class="pota-stat-card"><div class="pota-stat-icon">📡</div><div><div class="pota-stat-value" id="pota-qsos">—</div><div class="pota-stat-label">TOTAL QSOs</div></div></div>
+        <div class="pota-stat-card"><div class="pota-stat-icon">🗺️</div><div><div class="pota-stat-value" id="pota-states">—</div><div class="pota-stat-label">STATES</div></div></div>
+      </div>
+      <p class="pota-updated" id="pota-updated">Loading current POTA data…</p>
+      <div class="pota-map-card">
+        <div class="pota-map-heading">
+          <div><h2><span class="section-dot"></span> MY POTA PARKS</h2><p>Every park shown here is a park I have activated.</p></div>
+          <span class="map-legend"><span class="map-pin-dot"></span> Park Activated</span>
+        </div>
+        <div id="pota-map" class="pota-map" role="region" aria-label="Map of K5KAZ POTA parks"></div>
+      </div>
+    </section>
+
+
     <footer id="photos">
       <div>
         <strong>K5KAZ</strong>
@@ -109,5 +135,7 @@
     </footer>
 
   </main>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="scripts/pota.js"></script>
 </body>
 </html>
