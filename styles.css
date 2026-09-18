@@ -532,3 +532,40 @@ footer span {
   .favorite-parks-gallery{grid-template-columns:1fr}
   .favorite-park-card img{height:320px}
 }
+
+
+/* YouTube park videos */
+.youtube-section{
+  margin:18px 20px 0;
+  padding:0 8px 18px;
+}
+.youtube-intro{
+  margin:0 0 10px;
+  text-align:center;
+  color:rgba(255,255,255,.86);
+  font-size:16px;
+  line-height:1.5;
+}
+.youtube-banner-link{
+  display:block;
+  width:100%;
+  line-height:0;
+  text-decoration:none;
+}
+.youtube-banner{
+  display:block;
+  width:100%;
+  height:auto;
+  max-height:150px;
+  object-fit:contain;
+  border-radius:12px;
+  transition:transform .15s ease, filter .15s ease;
+}
+.youtube-banner-link:hover .youtube-banner{
+  transform:translateY(-1px);
+  filter:brightness(1.03);
+}
+@media(max-width:700px){
+  .youtube-section{margin-left:10px;margin-right:10px;padding-left:5px;padding-right:5px}
+  .youtube-intro{font-size:14px}
+}
