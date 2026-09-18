@@ -543,12 +543,14 @@ footer span {
   margin:0 0 10px;
   text-align:center;
   color:rgba(255,255,255,.86);
-  font-size:16px;
+  font-size:20px;
   line-height:1.5;
 }
 .youtube-banner-link{
   display:block;
   width:100%;
+  max-width:900px;
+  margin:0 auto;
   line-height:0;
   text-decoration:none;
 }
@@ -556,7 +558,7 @@ footer span {
   display:block;
   width:100%;
   height:auto;
-  max-height:150px;
+  max-height:none;
   object-fit:contain;
   border-radius:12px;
   transition:transform .15s ease, filter .15s ease;
@@ -567,5 +569,6 @@ footer span {
 }
 @media(max-width:700px){
   .youtube-section{margin-left:10px;margin-right:10px;padding-left:5px;padding-right:5px}
-  .youtube-intro{font-size:14px}
+  .youtube-intro{font-size:17px}
+  .youtube-banner-link{max-width:calc(100% - 10px)}
 }
