@@ -467,3 +467,68 @@ footer span {
 .pota-leader-empty{padding:18px;color:rgba(255,255,255,.58)}
 .pota-leader-source{margin:12px 2px 0;color:rgba(255,255,255,.50);font-size:12px}
 @media(max-width:700px){.pota-leaders-grid{grid-template-columns:1fr}}
+
+
+/* My Favorite Parks */
+.favorite-parks-section{
+  margin:18px 20px 0;
+  padding:28px;
+  border:1px solid rgba(255,255,255,.13);
+  border-radius:14px;
+  background:rgba(2,17,15,.72);
+  box-shadow:0 18px 50px rgba(0,0,0,.20);
+}
+.favorite-parks-heading h2{
+  margin:0;
+  color:var(--cream);
+  font-family:"Barlow Condensed",Impact,sans-serif;
+  font-size:37px;
+  letter-spacing:.02em;
+  line-height:1;
+}
+.favorite-parks-heading p{
+  max-width:1040px;
+  margin:10px 0 0;
+  color:rgba(255,255,255,.80);
+  font-size:14px;
+  line-height:1.65;
+}
+.favorite-parks-gallery{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+  margin-top:22px;
+}
+.favorite-park-card{
+  margin:0;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:12px;
+  background:rgba(0,0,0,.22);
+}
+.favorite-park-card img{
+  display:block;
+  width:100%;
+  height:330px;
+  object-fit:cover;
+}
+.favorite-park-card figcaption{
+  padding:13px 16px 15px;
+  color:#f4f2eb;
+}
+.favorite-park-card figcaption strong{
+  display:block;
+  font-size:16px;
+}
+.favorite-park-card figcaption span{
+  display:block;
+  margin-top:4px;
+  color:rgba(255,255,255,.58);
+  font-size:12px;
+}
+@media(max-width:700px){
+  .favorite-parks-section{margin-left:10px;margin-right:10px;padding:20px 15px}
+  .favorite-parks-heading h2{font-size:32px}
+  .favorite-parks-gallery{grid-template-columns:1fr}
+  .favorite-park-card img{height:320px}
+}
