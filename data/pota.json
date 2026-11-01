@@ -1,10 +1,10 @@
 {
   "callsign": "K5KAZ",
-  "updatedAt": "2026-10-31T10:57:43.877552+00:00",
+  "updatedAt": "2026-11-01T11:53:05.846063+00:00",
   "stats": {
-    "activations": 167,
+    "activations": 168,
     "parks": 46,
-    "qsos": 3465,
+    "qsos": 3484,
     "states": 17
   },
   "parks": [
